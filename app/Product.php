@@ -9,8 +9,8 @@ class Product extends Model
   protected $table = "products";
   protected $fillable = ['name', 'price'];
 
-  public function promotions()
+  public function ingredients()
   {
-      return $this->belongsToMany('App\Promotion');
+      return $this->belongsToMany('App\Ingredient');
   }
 }

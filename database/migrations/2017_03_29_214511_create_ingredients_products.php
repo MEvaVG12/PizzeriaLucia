@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePromotionsProducts extends Migration
+class CreateIngredientsProducts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePromotionsProducts extends Migration
      */
     public function up()
     {
-      Schema::create('promotions_pizzas', function (Blueprint $table) {
+      Schema::create('ingredient_product', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('promotion_id');
-        $table->integer('pizza_id');
+        $table->integer('product_id');
+        $table->integer('ingredient_id');
         $table->timestamps();
       });
     }

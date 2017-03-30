@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePromotionsTable extends Migration
+class CreateStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreatePromotionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('promotions', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('name');
-          $table->double('price', 15, 2);
-          $table->boolean('isDeleted')->default(false);
-          $table->timestamps();
+        Schema::create('stocks', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('amount');
+            $table->integer('ingredient_id');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +28,6 @@ class CreatePromotionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promotions');
+        Schema::dropIfExists('stocks');
     }
 }

@@ -6,6 +6,7 @@ use App\Ingredient;
 use App\Product;
 use App\Promotion;
 use App\PromotionDetail;
+use App\Stock;
 
 class DatabaseSeeder extends Seeder
 {
@@ -74,6 +75,11 @@ class DatabaseSeeder extends Seeder
         $d1->amount=2;
         $d1->product()->associate($p7);
         $d1->promotion()->associate($pr1);
+        $d1->save();
 
+        $s = new Stock();
+        $s->amount=30;
+        $s->ingredient()->associate($i1);
+        $s->save();
     }
 }

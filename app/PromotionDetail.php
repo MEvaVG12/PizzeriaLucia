@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PromotionDetail extends Model
 {
-    protected $table = "PromotionDetails";
-    protected $fillable = ['amount','product_id'];
+    protected $table = "promotion_details";
+    protected $fillable = ['amount','product_id', 'promotion_id'];
 
     public function product()
     {

@@ -182,6 +182,11 @@ return [
          */
         Zizaco\Entrust\EntrustServiceProvider::class,
 
+        /*
+        * Package Notification Krucas...
+        */
+        Krucas\Notification\NotificationServiceProvider::class,
+
     ],
 
     /*
@@ -231,6 +236,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Notification' => Krucas\Notification\Facades\Notification::class,
 
     ],
 

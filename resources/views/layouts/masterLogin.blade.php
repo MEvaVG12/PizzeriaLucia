@@ -29,20 +29,9 @@
       </div>
       <div class='row'>
         <div class='col-lg-12'>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
-              {{ csrf_field() }}
 
-              <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                  <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="Correo electrónico">
-
-                  @if ($errors->has('email'))
-                    <span class="help-block">
-                      <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                  @endif
-              </div>
               @yield('content')
-          </form>
+
         </div>
       </div>
     </div>

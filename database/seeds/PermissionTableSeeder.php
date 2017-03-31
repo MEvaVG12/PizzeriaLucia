@@ -49,6 +49,7 @@ class PermissionTableSeeder extends Seeder
         //Create user
         $user = new User();
         $user->name = 'admin';
+        $user->email = 'mail@gmail.com';
         $user->password = bcrypt('password');
         $user->save();
         $user->attachRole($admin);

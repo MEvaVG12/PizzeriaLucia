@@ -1,9 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <link href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
     <div class="page-header">
       <h1>Productos</h1>
@@ -26,9 +24,10 @@
       </table>
     </div>
 
-    <script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"type="text/javascript"></script>
+     <script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
     <script>
+    $(document).ready(function(){
       $('#productTable').DataTable({
         "processing": true,
         "serverSide": true,
@@ -38,5 +37,6 @@
           {data:'price'},
         ]
       });
+    });
     </script>
 @stop

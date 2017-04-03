@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
+use DB;
 use Notification;
 
 class StockController extends Controller
@@ -15,7 +16,8 @@ class StockController extends Controller
      */
     public function index()
     {
-        return view('stock.info');
+        $stocks = Stock::all()->take(10);
+        return View('stock/info')->with('stocks',$stocks);
         //return response()->json( Stock::all() );
     }
 
@@ -84,4 +86,23 @@ class StockController extends Controller
     {
         //
     }
+
+    public function listall(){
+        $stocks = Stock::
+        select('stocks.id','stocks.amount', 'ingredients.name as ingredient')
+            ->join('ingredients','ingredients.id','=','stocks.ingredient_id')
+            ->take(10);
+        return View('stock/info')->with('stocks',$stocks);
+        //return View('stock/listall')->with('stocks',$stocks);
+    }
+
+
+    public function getJoinsData()
+    {
+
+        return $posts = DB::table('stocks')->join('ingredients', 'ingredients.id', '=', 'stocks.ingredient_id')
+            ->select(['stocks.amount', 'ingredients.name']);
+
+    }
+
 }

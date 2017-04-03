@@ -1,228 +1,47 @@
 @extends('layouts.master')
 
 @section('content')
-      <div id='content'>
-        <div class='panel panel-default grid'>
-          <div class='panel-heading'>
-            <i class='icon-table icon-large'></i>
-            Default Table
-            <div class='panel-tools'>
-              <div class='btn-group'>
-                <a class='btn' href='#'>
-                  <i class='icon-wrench'></i>
-                  Settings
-                </a>
-                <a class='btn' href='#'>
-                  <i class='icon-filter'></i>
-                  Filters
-                </a>
-                <a class='btn' data-toggle='toolbar-tooltip' href='#' title='Reload'>
-                  <i class='icon-refresh'></i>
-                </a>
-              </div>
-              <div class='badge'>3 record</div>
-            </div>
-          </div>
-          <div class='panel-body filters'>
-            <div class='row'>
-              <div class='col-md-9'>
-                Add your custom filters here...
-              </div>
-              <div class='col-md-3'>
-                <div class='input-group'>
-                  <input class='form-control' placeholder='Quick search...' type='text'>
-                  <span class='input-group-btn'>
-                    <button class='btn' type='button'>
-                      <i class='icon-search'></i>
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <table class='table'>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-                <th class='actions'>
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class='success'>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr class='danger'>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr class='warning'>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr class='active'>
-                <td>4</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr class='disabled'>
-                <td>5</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>8</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td class='action'>
-                  <a class='btn btn-success' data-toggle='tooltip' href='#' title='Zoom'>
-                    <i class='icon-zoom-in'></i>
-                  </a>
-                  <a class='btn btn-info' href='#'>
-                    <i class='icon-edit'></i>
-                  </a>
-                  <a class='btn btn-danger' href='#'>
-                    <i class='icon-trash'></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-@endsection
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
+ 
+
+    <div class="page-header">
+      <h1>Stocks</h1>
+    </div>
+
+
+    <div class="panel-body" >
+      <table class="table table-bordered" id='stockTable'  >
+        <thead>
+           <th>Ingrediente</th>
+            <th>Cantidad</th>
+        </thead>
+      </table>
+    </div>
+
+
+
+        <!-- Javascripts -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script><script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script><script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+
+
+
+    <script>
+    $(document).ready(function(){
+      $('#stockTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "api/stocks",
+        "columns":[
+          {data:'name', name: 'ingredients.name'},
+          {data:'amount', name: 'stocks.amount'},
+        ]
+      });
+    });
+    </script>
+
+
+@stop

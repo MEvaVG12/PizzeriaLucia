@@ -187,6 +187,7 @@ return [
         */
         Krucas\Notification\NotificationServiceProvider::class,
 
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*
@@ -237,7 +238,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Notification' => Krucas\Notification\Facades\Notification::class,
-
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

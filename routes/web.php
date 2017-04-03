@@ -17,3 +17,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::GET('/', 'HomeController@index');
   Route::get('/home', 'HomeController@index');
 });
+
+route::get('product','ProductController@index');
+route::get('api/products',function(){
+  return Datatables::eloquent(Market\Product::query())->make(true);
+});

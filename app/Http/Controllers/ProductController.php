@@ -15,7 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json( Product::all() );
+        //return response()->json( Product::all() );
+        $products = Product::all()->take(10);
+        return View('product')->with('products',$products);
     }
 
     /**

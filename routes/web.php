@@ -20,5 +20,5 @@ Route::group(['middleware' => 'auth'], function() {
 
 route::get('product','ProductController@index');
 route::get('api/products',function(){
-  return Datatables::eloquent(Market\Product::query())->make(true);
+  return Datatables::eloquent(App\Product::query())->make(true);
 });

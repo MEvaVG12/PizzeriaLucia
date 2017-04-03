@@ -15,7 +15,8 @@ class StockController extends Controller
      */
     public function index()
     {
-        return response()->json( Stock::all() );
+        return view('stock.info');
+        //return response()->json( Stock::all() );
     }
 
     /**

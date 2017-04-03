@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //self::seedProducts();
+        self::seedProducts();
     }
 
     public function seedProducts(){

@@ -20,10 +20,11 @@ Route::group(['middleware' => 'auth'], function() {
 
 route::get('product','ProductController@index');
 route::get('api/products',function(){
-  return Datatables::eloquent(App\Product::select('products.id', 'products.product_type_id', 'product_types.name as typeName', 'products.name', 'products.price')
-            ->join('product_types','product_types.id','=','products.product_type_id')
-          )->make(true);
+  return Datatables::eloquent(App\Product::query())->make(true);
 });
-//'ingredient_product.ingredient_id', 'ingredient_product.product_id', 'ingredients.id', 'ingredients.name as ingredientName'
-//->join('ingredient_product', 'ingredient_product.product_id', '=', 'products.id')
-//->join('ingredients', 'ingredients.id', '=', 'ingredient_product.ingredient_id')
+
+route::get('stock','StockController@index');
+route::get('api/stocks',function(){
+  return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
+            ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
+});

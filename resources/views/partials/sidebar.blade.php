@@ -33,6 +33,15 @@
         </li>
       </ul>
     </li>
+    <li class='launcher dropdown hover'>
+      <i class="fa fa-user" aria-hidden="true"></i>
+      <a>Usuarios</a>
+      <ul class='dropdown-menu'>
+        <li>
+          <a href="{{ route('register') }}">Nuevo</a>
+        </li>
+      </ul>
+    </li>
   </ul>
   <div data-toggle='tooltip' id='beaker'></div>
 </section>

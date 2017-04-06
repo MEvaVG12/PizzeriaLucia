@@ -32,8 +32,7 @@ route::get('api/ingredients/{id}',function(){
   )->make(true);
 });
 
-route::get('stock','StockController@index');
-route::get('api/stocks',function(){
-  return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
-            ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
+route::get('stock',function(){
+  return View('stock/info');
 });
+

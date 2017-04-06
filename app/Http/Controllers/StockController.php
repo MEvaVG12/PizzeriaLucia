@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
-use DB;
-use Notification;
 
 class StockController extends Controller
 {
@@ -16,9 +14,8 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::all()->take(10);
-        return View('stock/info')->with('stocks',$stocks);
-        //return response()->json( Stock::all() );
+        return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
+            ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
     }
 
     /**
@@ -73,7 +70,9 @@ class StockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $movie = Stock::findOrFail($id);
+        $movie->amount = $request->input('amount');
+        $movie->save();
     }
 
     /**
@@ -85,24 +84,6 @@ class StockController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function listall(){
-        $stocks = Stock::
-        select('stocks.id','stocks.amount', 'ingredients.name as ingredient')
-            ->join('ingredients','ingredients.id','=','stocks.ingredient_id')
-            ->take(10);
-        return View('stock/info')->with('stocks',$stocks);
-        //return View('stock/listall')->with('stocks',$stocks);
-    }
-
-
-    public function getJoinsData()
-    {
-
-        return $posts = DB::table('stocks')->join('ingredients', 'ingredients.id', '=', 'stocks.ingredient_id')
-            ->select(['stocks.amount', 'ingredients.name']);
-
     }
 
 }

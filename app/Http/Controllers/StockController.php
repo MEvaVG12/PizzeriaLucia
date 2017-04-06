@@ -70,9 +70,13 @@ class StockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $movie = Stock::findOrFail($id);
-        $movie->amount = $request->input('amount');
-        $movie->save();
+        $this->validate($request, [
+            'amount' => 'required| numeric',
+        ]);
+
+        $stock = Stock::findOrFail($id);
+        $stock->amount = $request->input('amount');
+        $stock->save();
     }
 
     /**

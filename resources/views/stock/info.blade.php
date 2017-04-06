@@ -2,6 +2,47 @@
 
 @section('content')
 
+    <style>
+        .my-input-class {
+            padding: 3px 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .my-confirm-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #337ab7;
+            text-decoration: none;
+        }
+
+        .my-cancel-class {
+            padding: 3px 6px;
+            font-size: 12px;
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 4px;
+            background-color: #a94442;
+            text-decoration: none;
+        }
+
+        .error {
+            border: solid 1px;
+            border-color: #a94442;
+        }
+
+        .destroy-button{
+            padding:5px 10px 5px 10px;
+            border: 1px blue solid;
+            background-color:lightgray;
+        }
+    </style>
+
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 
   <div class="page-header">
@@ -17,7 +58,6 @@
             <tr>
                 <th class="text-center">Ingrediente</th>
                 <th class="text-center">Cantidad</th>
-                <th class="text-center">Id</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +76,10 @@
 
   <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
 
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
 
   <script>
     $(document).ready(function(){
@@ -49,8 +93,7 @@
         "ajax": "api/stocks",
         "columns":[
           {data:'name', name: 'ingredients.name'},
-          {data:'amount', name: 'stocks.amount'},
-          {data:'id', name: 'stocks.id'},
+          {data:'amount', name: 'stocks.amount'}
         ],
       });
 
@@ -89,8 +132,12 @@
         type: 'PUT',
         data: {"amount": amount, '_token': token},
           success: function (data) {
-            //console.log(data.sms);
+            toastr.success('La cantidad de stock se cambió exitosamente.', 'Guardado!', {timeOut: 5000});
+          },
+          error : function(xhr, status) {
+            toastr.error('En el campo cantidad debe ingresar un número', 'Error!')
           }
+
         });      
       }
 

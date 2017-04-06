@@ -4,10 +4,6 @@
 
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
-
   <div class="page-header">
     <h1>Stocks</h1>
   </div>
@@ -44,6 +40,9 @@
   <script>
     $(document).ready(function(){
       var table = $('#stockTable').DataTable({
+        "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+        },
         "processing": true,
         "serverSide": true,
         "ajax": "api/stocks",

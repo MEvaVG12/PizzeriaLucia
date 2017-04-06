@@ -25,7 +25,7 @@
             </tr>
         </tbody>
       </table>
-      </form>
+    </form>
 
   <!-- Javascripts -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
@@ -39,6 +39,7 @@
 
   <script>
     $(document).ready(function(){
+
       var table = $('#stockTable').DataTable({
         "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
@@ -49,11 +50,31 @@
         "columns":[
           {data:'name', name: 'ingredients.name'},
           {data:'amount', name: 'stocks.amount'},
-          {data:'id', name: 'stocks.id'}
-        ]
+          {data:'id', name: 'stocks.id'},
+        ],
       });
 
-      table.MakeCellsEditable({"onUpdate": myCallbackFunction});
+      table.MakeCellsEditable({
+            "onUpdate": myCallbackFunction,
+            "inputCss":'my-input-class',
+            "columns": [1],
+            "allowNulls": {
+                "columns": [1],
+                "errorClass": 'error'
+            },
+            "confirmationButton": { 
+                "confirmCss": 'my-confirm-class',
+                "cancelCss": 'my-cancel-class'
+            },
+        "inputTypes": [
+                {
+            "column":1, 
+            "type":"text", 
+            "options":null 
+          }
+            ]
+        });
+
 
     });
 
@@ -70,7 +91,7 @@
           success: function (data) {
             //console.log(data.sms);
           }
-        });
+        });      
       }
 
   </script>

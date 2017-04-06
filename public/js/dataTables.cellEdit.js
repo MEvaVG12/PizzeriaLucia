@@ -31,7 +31,7 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
             var table = $(callingElement.closest("table")).DataTable().table();
             var row = table.row($(callingElement).parents('tr'));
             var cell = table.cell($(callingElement).parent());
-            var columnIndex = cell.index().column;
+           // var columnIndex = cell.index().column;
             var inputField =getInputField(callingElement);
 
             // Update
@@ -40,11 +40,11 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
                 // If columns specified
                 if (settings.allowNulls.columns) {
                     // If current column allows nulls
-                    if (settings.allowNulls.columns.indexOf(columnIndex) > -1) {
+                   /* if (settings.allowNulls.columns.indexOf(columnIndex) > -1) {
                         _update(newValue);
                     } else {
                         _addValidationCss();
-                    }
+                    }*/
                     // No columns allow null
                 } else if (!newValue) {
                     _addValidationCss();

@@ -67,6 +67,7 @@ $(document).ready(function(){
             "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
             },
+            "paging": false,
             "ajax": "api/ingredients/".$id,
             "bAutoWidth" : false,
             "columns":[

@@ -79,6 +79,7 @@
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script>
   $(document).ready(function(){
 
@@ -90,9 +91,10 @@
       "processing": true,
       "serverSide": true,
       "ajax": "api/stocks",
+      "bAutoWidth" : false,
       "columns":[
-        {data:'name', name: 'ingredients.name'},
-        {data:'amount', name: 'stocks.amount'}
+        {sWidth : "50%", data:'name', name: 'ingredients.name'},
+        {sWidth : "50%", data:'amount', name: 'stocks.amount'}
       ],
     });
 

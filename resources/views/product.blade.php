@@ -19,7 +19,7 @@
     </div>
 
     <div class="page-body" id="ingredientes" style="display:none">
-      <h2>Ingredientes</h2>
+      <h3>Ingredientes</h3>
       <table class='table table-bordered' id='ingredientTable'>
         <thead>
            <th>Ingredientes</th>
@@ -35,13 +35,17 @@
 <script>
 $(document).ready(function(){
   var tableP = $('#productTable').DataTable({
+    "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+    },
     "processing": true,
     "serverSide": true,
     "ajax": "api/products",
     "deferRender": true,
+    "bAutoWidth" : false,
     "columns":[
-        {data:'name', name: 'products.name'},
-        {data:'price', price: 'products.price'},
+        {sWidth : "50%", data:'name', name: 'products.name'},
+        {sWidth : "50%", data:'price', price: 'products.price'},
     ],
     "rowId": 'name',
     "select": true,
@@ -60,9 +64,13 @@ $(document).ready(function(){
         if (tableP.row(this).data()['typeName'] == "Pizza") {
           console.log('Pizza');
           $('#ingredientTable').DataTable({
+            "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+            },
             "ajax": "api/ingredients/".$id,
+            "bAutoWidth" : false,
             "columns":[
-              {data:'name', name: 'ingredients.name'},
+              {sWidth : "100%", data:'name', name: 'ingredients.name'},
             ],
           });
           document.getElementById('ingredientes').style.display = "block";

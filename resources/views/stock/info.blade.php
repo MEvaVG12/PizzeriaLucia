@@ -31,16 +31,16 @@
             text-decoration: none;
         }
 
-        .error {
-            border: solid 1px;
-            border-color: #a94442;
-        }
-
         .destroy-button{
             padding:5px 10px 5px 10px;
             border: 1px blue solid;
             background-color:lightgray;
         }
+        
+        td {
+            text-align:center;
+        }
+
     </style>
 
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
@@ -85,6 +85,7 @@
     $(document).ready(function(){
 
       var table = $('#stockTable').DataTable({
+        
         "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
         },
@@ -142,8 +143,6 @@
       }
 
   </script>
-
-
 
 
 @stop

@@ -23,3 +23,17 @@ route::get('stocks', function(){
   return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
             ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
 });
+
+route::get('products',function(){
+  return Datatables::eloquent(App\Product::select('products.id', 'products.name', 'products.price', 'products.product_type_id', 'product_types.name as typeName')
+  ->join('product_types','products.product_type_id','=','product_types.id'))->make(true);
+});
+
+route::get('ingredients/{id}',function(){
+  return Datatables::eloquent(App\Ingredient::select('ingredients.name as name')
+    ->join('ingredient_product',function($join){
+        $join->on('ingredient_product.ingredient_id',"=",'ingredients.id')
+        ->on('ingredient_product.product_id',"=",$id );
+    })
+  )->make(true);
+});

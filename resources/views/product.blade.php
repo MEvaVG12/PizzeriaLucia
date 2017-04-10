@@ -16,6 +16,9 @@
       </table>
     </div>
 
+   
+   <form method="POST">   
+    {{ csrf_field() }}
     <div class="page-body" id="ingredientes" style="display:none">
       <h2>Ingredientes</h2>
       <table class='table table-bordered' id='ingredientTable'>
@@ -24,6 +27,7 @@
         </thead>
         </table>
     </div>
+    </form>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
@@ -54,9 +58,17 @@
             tableP.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
             if (tableP.row(this).data()['typeName'] == "Pizza") {
-              console.log('Pizza');
+              console.log( $id);
+                    var token = $(" [name=_token]").val();
               $('#ingredientTable').DataTable({
-                "ajax": "api/ingredients/".$id,
+                "ajax": {
+                    "url": "api/ingredients",
+                    "type": "post",
+                     "data" : {
+                         '_token': token,
+                          "id" :  $id ,
+                      }
+                },
                 "columns":[
                   {data:'name', name: 'ingredients.name'},
                 ],
@@ -68,25 +80,7 @@
             }
         }
       } );
-
-      /**$('#productTable tbody').on( 'click', 'tr', function () {
-        $id = tableP.row(this).data()['id'];
-        if (tableP.row(this).data()['typeName'] == "Pizza") {
-          var table = $('#ingredientTable').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": "api/ingredients/".$id,
-            "columns":[
-                {data:'name', name: 'ingredients.name'},
-            ]
-          });
-          console.log('Pizza');
-          document.getElementById('ingredientes').style.display = "block";
-        } else {
-          console.log('Empanada');
-          document.getElementById('ingredientes').style.display = "none";
-        }
-      });**/
     });
+
     </script>
 @stop

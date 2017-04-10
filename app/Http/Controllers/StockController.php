@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
+use App\ Product; 
 
 class StockController extends Controller
 {
@@ -89,5 +90,6 @@ class StockController extends Controller
     {
         //
     }
+
 
 }

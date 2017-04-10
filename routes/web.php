@@ -18,15 +18,6 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/home', 'HomeController@index');
 });
 
-route::get('product','ProductController@index');
+Route::get('product','ProductController@index');
 
-route::get('stock',function(){
-  return View('stock/info');
-});
-
-route::get('api/products',function(){
-  return Datatables::eloquent(App\Product::select('products.id', 'products.name', 'products.price', 'products.product_type_id', 'product_types.name as typeName')
-  ->join('product_types','products.product_type_id','=','product_types.id'))->make(true);
-});
-
-Route::post('api/ingredients','ProductController@showIngredients');
+Route::get('stock','StockController@index');

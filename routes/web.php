@@ -19,7 +19,8 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 route::get('product','ProductController@index');
-
+route::get('promotion/create','PromotionController@Create');
+route::get('promotion/index','PromotionController@index');
 route::get('stock',function(){
   return View('stock/info');
 });

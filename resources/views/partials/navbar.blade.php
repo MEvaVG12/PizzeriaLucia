@@ -1,6 +1,6 @@
 <div class='navbar navbar-default' id='navbar'>
   <a class='navbar-brand' href='#'>
-    <img src="assets/images/pizza.png" alt="Pizzería Lucía">
+    <img src="{{url('assets/images/pizza.png')}}" alt="Pizzería Lucía">
     Pizzería Lucía
   </a>
   <ul class='nav navbar-nav pull-right'>

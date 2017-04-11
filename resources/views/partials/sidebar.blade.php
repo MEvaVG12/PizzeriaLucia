@@ -5,9 +5,20 @@
       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
       <a href="dashboard.html">Ventas</a>
     </li>
-    <li class='launcher'>
+    <li class='launcher dropdown hover'>
       <i class="fa fa-gift" aria-hidden="true"></i>
       <a href="forms.html">Promociones</a>
+      <ul class='dropdown-menu'>
+        <li>
+          <a href="#">Nueva</a>
+        </li>
+        <li>
+          <a href="#">Consultar</a>
+        </li>
+        <li>
+          <a href="#">Eliminar</a>
+        </li>
+      </ul>
     </li>
     <li class='launcher'>
       <i class="fa fa-cutlery" aria-hidden="true"></i>

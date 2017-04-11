@@ -16,7 +16,8 @@ class PromotionController extends Controller
      */
     public function index()
     {
-        return response()->json( Promotion::all() );
+        $promotions = Promotion::all()->take(10);
+        return View('promotion.index')->with('promotions',$promotions);
     }
 
     /**

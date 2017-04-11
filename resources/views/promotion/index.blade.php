@@ -18,15 +18,18 @@
       </table>
     </div>
 
-    <div class="page-body" id="products" style="display:none">
-      <h3>Promoción formada por:</h3>
-      <table class='table table-bordered' id='productTable'>
-        <thead>
-           <th>Producto</th>
-           <th>Cantidad</th>
-        </thead>
+    <form method="POST">
+      {{ csrf_field() }}
+      <div class="page-body" id="products" style="display:none">
+        <h3>Promoción formada por:</h3>
+        <table class='table table-bordered' id='productTable'>
+          <thead>
+            <th>Producto</th>
+            <th>Cantidad</th>
+          </thead>
         </table>
-    </div>
+      </div>
+    </form>
 @stop
 
 @section('javascript')
@@ -53,22 +56,35 @@ $(document).ready(function(){
     "dom": 'Bfrtip',
   });
   $('#promotionTable tbody').on( 'click', 'tr', function () {
-      $id = selectedRow.data().id;
+    if ( $(this).hasClass('selected') ) {//cuando deselecciono
+        $(this).removeClass('selected');
+        document.getElementById('products').style.display = "none";
+    }
+    else {
+      $id = tableP.row(this).data()['id'];
+      tableP.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
+      var token = $(" [name=_token]").val();
       $('#productTable').DataTable({
+          "ajax": {
+              "url": "{{url('api/promotion/index/promotionDetails')}}",
+              "type": "post",
+              "data" : {
+                 '_token': token,
+                  "id" :  $id ,
+              }
+          },
           "language": {
               "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
           },
-          "searching": false,
-          "paging": false,
-          //"ajax": "api/ingredients/".$id,
-          "bAutoWidth" : false,
           "columns":[
-              {sWidth : "50%", data:'name', name: 'products.name'},
-              {sWidth : "50%", data:'count', name: 'promotion_details.amount'},
+              {sWidth : "50%", data:'productName', name: 'products.name'},
+              {sWidth : "50%", data:'amount', name: 'promotion_details.amount'},
           ],
       });
       console.log($id)
       document.getElementById('products').style.display = "block";
+    }
   } );
 });
 </script>

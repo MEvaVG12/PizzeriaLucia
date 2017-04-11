@@ -19,6 +19,23 @@ class ProductController extends Controller
         return View('product')->with('products',$products);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'price' => 'required| numeric',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->price = $request->input('price');
+        $product->save();
+    }
 
     /**
      * Display the specified resource.

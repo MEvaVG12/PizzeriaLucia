@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Stock;
 
@@ -14,8 +15,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
-            ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
+       return View('stock/info');
     }
 
     /**
@@ -48,6 +48,20 @@ class StockController extends Controller
     public function show($id)
     {
         //
+    }
+
+
+    /**
+     * Display stock list.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showStock()
+    {
+        $stocks = DB::table('stocks')->join('ingredients', 'ingredients.id', '=', 'stocks.ingredient_id') ->select('stocks.ingredient_id', 'stocks.amount', 'ingredients.name AS name')->get();
+
+        return response()->json(['success' => true, 'data' => $stocks]);
     }
 
     /**
@@ -89,5 +103,6 @@ class StockController extends Controller
     {
         //
     }
+
 
 }

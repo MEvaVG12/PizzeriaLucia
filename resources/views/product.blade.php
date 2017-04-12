@@ -119,6 +119,8 @@
             document.getElementById('ingredientes').style.display = "none";
         }
         else {//cuando selecciono
+            $("#ingredientTable").dataTable().fnDestroy();
+
             $id = tableP.row(this).data()['id'];
             tableP.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
@@ -132,7 +134,7 @@
                      "data" : {
                          '_token': token,
                           "id" :  $id ,
-                      }
+                      },
                 },
                 "columns":[
                   {data:'name', name: 'ingredients.name'},

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('links')
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 @stop
 
 @section('content')

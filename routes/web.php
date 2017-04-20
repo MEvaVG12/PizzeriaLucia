@@ -15,10 +15,11 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
   Route::GET('/', 'HomeController@index');
-  Route::get('/home', 'HomeController@index');
+  Route::GET('/home', 'HomeController@index');
+  Route::GET('product','ProductController@index');
+  Route::GET('promotion/create','PromotionController@create');
+  Route::GET('promotion/index','PromotionController@index');
+  Route::GET('stock','StockController@index');
 });
 
-route::get('product','ProductController@index');
-route::get('promotion/create','PromotionController@create');
-route::get('promotion/index','PromotionController@index');
-route::get('stock','StockController@index');
+

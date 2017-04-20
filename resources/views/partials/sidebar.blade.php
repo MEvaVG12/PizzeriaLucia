@@ -7,13 +7,13 @@
     </li>
     <li class='launcher dropdown hover'>
       <i class="fa fa-gift" aria-hidden="true"></i>
-      <a href="forms.html">Promociones</a>
+      <a href="{{ url('promotion/index') }}">Promociones</a>
       <ul class='dropdown-menu'>
         <li>
-          <a href="#">Nueva</a>
+          <a href="{{ url('promotion/create') }}">Nueva</a>
         </li>
         <li>
-          <a href="#">Consultar</a>
+          <a href="{{ url('promotion/index') }}">Consultar</a>
         </li>
         <li>
           <a href="#">Eliminar</a>
@@ -22,11 +22,11 @@
     </li>
     <li class='launcher'>
       <i class="fa fa-cutlery" aria-hidden="true"></i>
-      <a href="tables.html">Productos</a>
+      <a href="{{ url('product') }}">Productos</a>
     </li>
     <li class='launcher'>
       <i class="fa fa-book" aria-hidden="true"></i>
-      <a href="tables.html">Stock</a>
+      <a href="{{ url('stock') }}">Stock</a>
     </li>
     <li class='launcher dropdown hover'>
       <i class="fa fa-pie-chart" aria-hidden="true"></i>
@@ -40,7 +40,7 @@
           <a href='#'>Promociones</a>
         </li>
         <li>
-          <a href='#'>Productos</a>
+          <a href="#">Productos</a>
         </li>
       </ul>
     </li>

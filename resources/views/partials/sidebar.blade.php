@@ -16,7 +16,7 @@
           <a href="{{ url('promotion/index') }}">Consultar</a>
         </li>
         <li>
-          <a href="#">Eliminar</a>
+          <a href="{{ url('promotion/delete') }}">Eliminar</a>
         </li>
       </ul>
     </li>

@@ -42,11 +42,10 @@
   function myCallbackFunction(updatedCell, updatedRow, oldValue) {
     var id = updatedRow.data().id;
     var amount = updatedRow.data().amount;
-    var route = "{{url('api/stock/update')}}/";
     var token = $(" [name=_token]").val();
 
     $.ajax({
-      url: "{{ url('api/stock/update') }}" + '/' + id + '',
+      url: "http://localhost:8080/pizzeria/public/api/stock/update/" + id + '',
       type: 'PUT',
       data: {"amount": amount, '_token': token},
         success: function (data) {

@@ -28,3 +28,4 @@ Route::post('ingredients','ProductController@showIngredients');
 Route::get('promotion/index','PromotionController@showPromotions');
 Route::post('promotion/index/promotionDetails','PromotionController@showPromotionDetails');
 Route::put('product/update/{id}','ProductController@update');
+Route::put('promotion/delete/{id}','PromotionController@destroy');

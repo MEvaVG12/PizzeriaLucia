@@ -11,6 +11,11 @@ $(document).ready(function(){
     "columns":[
         {sWidth : "50%", data:'name', name: 'promotions.name'},
         {sWidth : "50%", data:'price', name: 'promotions.price'},
+        {"className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>"
+        },
     ],
     "rowId": 'name',
     "select": true,
@@ -28,7 +33,7 @@ $(document).ready(function(){
       var token = $(" [name=_token]").val();
       $('#productTable').DataTable({
           "ajax": {
-              "url": "index:173 http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
+              "url": "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
               "type": "post",
               "data" : {
                  '_token': token,

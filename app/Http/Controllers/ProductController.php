@@ -37,6 +37,7 @@ class ProductController extends Controller
         $product->save();
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -46,6 +47,22 @@ class ProductController extends Controller
     public function show($id)
     {
         return response()->json(Product::findOrFail($id));
+    }
+
+
+
+    public function destroy(Request $request)
+    {
+        $product = Product::FindOrFail($request->input('id'));
+        $result = $product->delete();
+        if ($result)
+        {
+            return response()->json(['success'=>'true']); 
+        }
+        else
+        {
+            return response()->json(['success'=> 'false']);
+        }
     }
 
     /**

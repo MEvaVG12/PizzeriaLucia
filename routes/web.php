@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::GET('product','ProductController@index');
   Route::GET('promotion/create','PromotionController@create');
   Route::GET('promotion/index','PromotionController@index');
+  Route::GET('promotion/delete','PromotionController@delete');
   Route::GET('stock','StockController@index');
 });
 

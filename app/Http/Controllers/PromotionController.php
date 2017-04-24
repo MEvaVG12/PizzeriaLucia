@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Promotion;
 use App\PromotionDetail;
+use App\Product;
 use Notification;
 
 class PromotionController extends Controller
@@ -49,17 +50,41 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
+        /*$this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'display_name' => 'required',
+            'description' => 'required',
+            'permission' => 'required',
+        ]);*/
+
+
+
         $p = new Promotion();
         $p->name = $request->input('name');
         $p->price = $request->input('price');
         $p->save();
-        /**VER COMO RECORRER TODOS LOS DETALLES
+      //  VER COMO RECORRER TODOS LOS DETALLES
+       $productsId = $request->input('productsId');
+
+        /*for ($i=0; $i <= $productsId; $i++) { 
+            //$product = PromotionDetail::findOrFail($productsId[0]);
+        }*/
+          $product = Product::findOrFail(2);
         $d = new PromotionDetail();
-        $d->amount = $request->input('amount');
-        $d->product()->associate($request->input('product'));
+        $d->amount = 15;
+        $d->product()->associate($product);
         $d->promotion()->associate($p);
-        $d->save();**/
-        return response()->json( ['error' => false,'msg' => 'La promoción se ha guardado exitosamente!' ] );
+        $d->save();
+
+
+      /*  foreach ($request->input('products') as $key => $value) {
+            $p->attachProducts($value);
+        }*/
+
+     return response()->json(['success' => true]);
+
+                /*return redirect()->route('roles.index')
+                        ->with('success','Role created successfully');*/
     }
 
     /**
@@ -146,7 +171,9 @@ class PromotionController extends Controller
     {
         $promotions = DB::table('promotions') ->select('promotions.id', 'promotions.name', 'promotions.price')->where('isDeleted', '=', '0')->get();
 
-       return response()->json(['success' => true, 'data' => $promotions]);
+        $promotions = DB::table('promotions') ->select( 'promotions.name')->where('isDeleted', '=', '0')->get();
+
+       return response()->json($promotions);
     }
 
 }

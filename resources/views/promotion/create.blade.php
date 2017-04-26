@@ -8,8 +8,20 @@
 @stop
 
 @section('content')
+
   <div class="page-header">
     <h1>Crear Promoción</h1>
+  </div>
+
+  <div id="errorMain" class="alert alert-danger hidden">
+    <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
+    <ul id="listErrorMain">
+
+    </ul>
+  </div>
+
+  <div id="success" class="alert alert-success hidden">
+    <strong>Éxito!</strong> La promoción se guardo correctamente.
   </div>
 
   <form method="POST">
@@ -19,11 +31,11 @@
     <div class="panel-body">
       <div class='form-group'>
         <label for="title" class='control-label'>Nombre de la promoción: </label>
-        <input class='form-control' placeholder='Ingrese nombre de la promoción' type='text' name='name' id='name' >
+        <input required class='form-control' placeholder='Ingrese nombre de la promoción' type='text' name='name' id='name' >
       </div>
       <div class='form-group'>
         <label for="title" class='control-label'>Precio de la promoción: </label>
-        <input class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
+        <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
       </div>
     </div>
   </form>
@@ -51,10 +63,16 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Agregar producto</h4>
                 </div>
+                <div id="errorModal" class="alert alert-danger hidden">
+                    <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
+                    <ul id="listErrorModal">
+
+                    </ul>
+                </div>
                 <div class="modal-body">
                     <div class='form-group'>
                       <p>Cantidad</p>
-                      <input class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
+                      <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
                     </div>
                     <div class='form-group'>
                       <p> Producto: </p>
@@ -67,7 +85,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" data-dismiss="modal" name='addProduct' id='addProduct' class="btn btn-primary">Agregar</button>
+                    <button type="button" name='addProduct' id='addProduct' class="btn btn-primary">Agregar</button>
                 </div>
             </div>
         </div>
@@ -127,10 +145,13 @@
     "dom": 'Bfrtip',
   });
 
+  var counter = 1; //contiene la cantidad de filas de la tabla
+
   //Borra la fila en la table
   $('#promotionDetailTable tbody').on( 'click', 'button', function () {
      var rowSelector = promotionDetailTable.row($(this));
       rowSelector.remove().draw();
+      //counter--;
       //TODO ver porque no funciona
   } );
 
@@ -144,24 +165,43 @@
       }
   } );
 
-  var counter = 1;
   $('#addProduct').on( 'click', function () {
-
+      var errors = [];
       var rowData = productTable.rows('.selected').data()[0];
-      var object = rowData[0];
 
-      //Agrega en la tabla de detalle de promoción los datos seleccionados
-      promotionDetailTable.row.add( [
-          rowData['name'],
-          rowData['id'],
-          $("#amount").val()
-      ] ).draw( false );
- 
-      counter++;
+      //Valida que todos los datos están ingresados
+      if ($("#amount").val() === '') {
+        errors.push('El campo cantidad es requerido')  
+      } if ( $('#productTable tbody tr.selected').length < 1) {
+        errors.push('Seleccione un producto en la tabla')
+      }
 
-      //limpia modelo
-      $("#amount").val('');
-      productTable.rows('tr.selected').deselect();
+      console.log(errors);
+      if (errors.length>0) {
+          $('#listErrorModal').empty();
+          $("#errorModal").removeClass('hidden');
+          for (var i in errors) {
+            $("#errorModal ul").append('<li><span>'+ errors[i] + '</span></li>');
+          }
+
+      } else {
+          $("#errorModal").addClass('hidden');
+
+          //Agrega en la tabla de detalle de promoción los datos seleccionados
+          promotionDetailTable.row.add( [
+              rowData['name'],
+              rowData['id'],
+              $("#amount").val()
+          ] ).draw( false );
+     
+          counter++;
+
+          //limpia modelo
+          $("#amount").val('');
+          productTable.rows('tr.selected').deselect();
+
+          $('#myModal').modal('toggle');
+      }
   } );
 });
 
@@ -178,29 +218,55 @@
   //Recoge los datos para ser guardados en la bd
    function save()
     {    
+      var errors = [];
       var table = $('#promotionDetailTable').DataTable();
-      var  productsId = [];
-      var  amounts = [];
+      var productsId = [];
+      var amounts = [];
       var token = $(" [name=_token]").val();
 
-      table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-        var data = this.data();
-        productsId.push(data[1]);
-        amounts.push(parseInt(data[2]));
-      } );  
+      //Valida que todos los datos están ingresados
+      if ($("#name").val() === '') {
+        errors.push('El campo nombre es requerido')
+      }  if ($("#price").val() === '') {
+        errors.push('El campo precio es requerido')
+      }  if (table.rows().data().length<1) {
+        errors.push('Ingrese al menos un producto en la tabla')
+      }
 
-      $.ajax({
-        url: "http://localhost:8080/pizzeria/public/api/promotion/create",
-        type: 'POST',
-        data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
-          success: function (data) {
-           toastr.success('La promoción se guardó exitosamente.', 'Guardado!', {timeOut: 5000});
-            $('#promotionTable').DataTable().ajax.reload();
-          },
-          error : function(xhr, status) {
-          toastr.error('La promoción no ha podido ser guardada', 'Error!')
+      if (errors.length>0) {
+          $('#listErrorMain').empty();
+          $("#errorMain").removeClass('hidden');
+          for (var i in errors) {
+            $("#errorMain ul").append('<li><span>'+ errors[i] + '</span></li>');
           }
-      });
+
+      } else {
+        $("#errorMain").addClass('hidden');
+
+        table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+          var data = this.data();
+          productsId.push(data[1]);
+          amounts.push(parseInt(data[2]));
+         } );  
+
+        $.ajax({
+          url: "http://localhost:8080/pizzeria/public/api/promotion/create",
+          type: 'POST',
+          data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
+            success: function (data) {
+             toastr.success('La promoción se guardó exitosamente.', 'Guardado!', {timeOut: 5000});
+              $('#promotionTable').DataTable().ajax.reload();
+            },
+            error : function(xhr, status) {
+            toastr.error('La promoción no ha podido ser guardada', 'Error!')
+            }
+        });
+
+        //limpia pantalla
+        $("#name").val('');
+        $("#price").val('');
+        table.clear().draw();
+      }
     }
 </script>
 @stop

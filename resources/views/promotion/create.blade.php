@@ -37,19 +37,20 @@
         <label for="title" class='control-label'>Precio de la promoción: </label>
         <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
       </div>
+      <div class='form-group'>
+          <label for="title" class='control-label'>Productos: </label>
+           <table class='table table-bordered' id='promotionDetailTable'>
+              <thead>
+                <th>Producto</th>
+                <th>IDProductos</th>
+                <th>Cantidad</th>
+                <th></th>
+             </thead>
+           </table>
+      </div>
     </div>
   </form>
-    <div class='form-group'>
-         <p> Producto: </p>
-         <table class='table table-bordered' id='promotionDetailTable'>
-            <thead>
-              <th>Producto</th>
-              <th>IDProductos</th>
-              <th>Cantidad</th>
-              <th></th>
-           </thead>
-         </table>
-    </div>
+
 
 
     <!-- Button trigger modal -->
@@ -149,10 +150,8 @@
 
   //Borra la fila en la table
   $('#promotionDetailTable tbody').on( 'click', 'button', function () {
-     var rowSelector = promotionDetailTable.row($(this));
-      rowSelector.remove().draw();
-      //counter--;
-      //TODO ver porque no funciona
+     promotionDetailTable.row( $(this).parents('tr') ).remove().draw();
+      counter--;
   } );
 
   //Permite seleccionar solo una fila de la tabla

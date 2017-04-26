@@ -57,34 +57,28 @@ class PromotionController extends Controller
             'permission' => 'required',
         ]);*/
 
-
-
         $p = new Promotion();
         $p->name = $request->input('name');
         $p->price = $request->input('price');
         $p->save();
-      //  VER COMO RECORRER TODOS LOS DETALLES
-       $productsId = $request->input('productsId');
 
-        /*for ($i=0; $i <= $productsId; $i++) { 
-            //$product = PromotionDetail::findOrFail($productsId[0]);
-        }*/
-          $product = Product::findOrFail(2);
-        $d = new PromotionDetail();
-        $d->amount = 15;
-        $d->product()->associate($product);
-        $d->promotion()->associate($p);
-        $d->save();
+        $productsId = $request->input('productsId');
+        $amounts = $request->input('amounts');
 
-
-      /*  foreach ($request->input('products') as $key => $value) {
-            $p->attachProducts($value);
-        }*/
+        $i= 0;
+        foreach($productsId as $productId)
+        {
+            $product = Product::findOrFail($productId);
+            $d = new PromotionDetail();
+            $d->amount = $amounts[$i];
+            $d->product()->associate($product);
+            $d->promotion()->associate($p);
+            $d->save();
+            $i++;
+        }
 
      return response()->json(['success' => true]);
 
-                /*return redirect()->route('roles.index')
-                        ->with('success','Role created successfully');*/
     }
 
     /**

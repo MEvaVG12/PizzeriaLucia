@@ -25,9 +25,8 @@ $(document).ready(function(){
 });
 
 
- function fun_delete()
-    {    
-      var id = 1;
+ function fun_delete(){    
+    var id = 1; //TODO generalizar
     var token = $(" [name=_token]").val();
 
     $.ajax({
@@ -42,4 +41,4 @@ $(document).ready(function(){
         toastr.error('La promoción no ha podido ser eliminada', 'Error!')
         }
     });
-    }
+  }

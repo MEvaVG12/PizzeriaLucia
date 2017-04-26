@@ -50,12 +50,12 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
-        /*$this->validate($request, [
-            'name' => 'required|unique:roles,name',
-            'display_name' => 'required',
-            'description' => 'required',
-            'permission' => 'required',
-        ]);*/
+        $this->validate($request, [
+            'name' => 'required|unique:promotions',
+            'price' => 'required',
+            'productsId' => 'required',
+            'amounts' => 'required',
+        ]);
 
         $p = new Promotion();
         $p->name = $request->input('name');
@@ -119,12 +119,7 @@ class PromotionController extends Controller
       $p->name = $request->input('name');
       $p->price = $request->input('price');
       $p->save();
-      /**VER COMO RECORRER TODOS LOS DETALLES
-      $d = new PromotionDetail();
-      $d->amount = $request->input('amount');
-      $d->product()->associate($request->input('product'));
-      $d->promotion()->associate($p);
-      $d->save();**/
+
       return response()->json( ['error' => false,'msg' => 'La promoción ha sido modificada exitosamente!' ] );
     }
 

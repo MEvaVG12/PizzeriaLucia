@@ -8,10 +8,11 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-      <h1>Crear Promoción</h1>
-    </div>
-    <form method="POST">
+  <div class="page-header">
+    <h1>Crear Promoción</h1>
+  </div>
+
+  <form method="POST">
         
     {{ csrf_field() }}
    
@@ -22,19 +23,22 @@
       </div>
       <div class='form-group'>
         <label for="title" class='control-label'>Precio de la promoción: </label>
-        <input class='form-control' placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
+        <input class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
       </div>
-      <div class='form-group'>
+    </div>
+  </form>
+    <div class='form-group'>
          <p> Producto: </p>
          <table class='table table-bordered' id='promotionDetailTable'>
             <thead>
               <th>Producto</th>
               <th>IDProductos</th>
               <th>Cantidad</th>
+              <th></th>
            </thead>
          </table>
-      </div>
     </div>
+
 
     <!-- Button trigger modal -->
     <a href="#myModal" role="button" class="btn btn-large btn-primary" data-toggle="modal">Agregar producto</a>
@@ -45,12 +49,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Confirmation</h4>
+                    <h4 class="modal-title">Agregar producto</h4>
                 </div>
                 <div class="modal-body">
                     <div class='form-group'>
                       <p>Cantidad</p>
-                      <input class='form-control' placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
+                      <input class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
                     </div>
                     <div class='form-group'>
                       <p> Producto: </p>
@@ -69,8 +73,8 @@
         </div>
     </div>
 
-    </form>
-        <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+
+    <div class="col-xs-12 col-sm-12 col-md-12 text-right">
       <button class="btn btn-primary"  onclick='save()'>Guardar</button>
     </div>
 @stop
@@ -83,9 +87,8 @@
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.checkboxes.min.js') }}"></script>
 <script >
   $(document).ready(function(){
-
-    var rows_selected = [];
-  var tableP = $('#productTable').DataTable({
+    
+    var productTable = $('#productTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
     },
@@ -103,66 +106,101 @@
     "dom": 'Bfrtip',
   });
 
-    var promotionDetailTable = $('#promotionDetailTable').DataTable({
+  var promotionDetailTable = $('#promotionDetailTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
     },
+    "columnDefs": [
+    {
+      "targets": [ 1 ],
+      "visible": false,
+      "searchable": false
+    }, 
+    { "sWidth" : "8%",
+      "targets": [ 3 ],
+      "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>",
+      "searchable": false
+    }],
     "deferRender": true,
     "bAutoWidth" : false,
     "rowId": 'name',
     "dom": 'Bfrtip',
   });
 
-    var counter = 1;
-    $('#addProduct').on( 'click', function () {
+  //Borra la fila en la table
+  $('#promotionDetailTable tbody').on( 'click', 'button', function () {
+     var rowSelector = promotionDetailTable.row($(this));
+      rowSelector.remove().draw();
+      //TODO ver porque no funciona
+  } );
 
-        var rowData = tableP.rows('.selected').data()[0];
-        var object = rowData[0];
-        console.log(rowData['id']);
-        console.log($("#amount").val());
-        promotionDetailTable.row.add( [
-            rowData['name'],
-            rowData['id'],
-            $("#amount").val()
-        ] ).draw( false );
- 
-        counter++;
+  //Permite seleccionar solo una fila de la tabla
+  $('#productTable tbody').on( 'click', 'tr', function () {
+      if ( $(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+      } else {
+        productTable.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+      }
+  } );
 
-        //TODO limpiar modelo
-    } );
+  var counter = 1;
+  $('#addProduct').on( 'click', function () {
+
+      var rowData = productTable.rows('.selected').data()[0];
+      var object = rowData[0];
+
+      //Agrega en la tabla de detalle de promoción los datos seleccionados
+      promotionDetailTable.row.add( [
+          rowData['name'],
+          rowData['id'],
+          $("#amount").val()
+      ] ).draw( false );
  
-    $('#productTable tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
-    } );
+      counter++;
+
+      //limpia modelo
+      $("#amount").val('');
+      productTable.rows('tr.selected').deselect();
+  } );
 });
 
+  //Permite ingresar solo números
+  function isNumber(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      return true;
+    }
 
- function save()
-  {    
-    var table = $('#promotionDetailTable').DataTable();
-    var  productsId = [];
-    var  amounts = [];
-    var token = $(" [name=_token]").val();
+  //Recoge los datos para ser guardados en la bd
+   function save()
+    {    
+      var table = $('#promotionDetailTable').DataTable();
+      var  productsId = [];
+      var  amounts = [];
+      var token = $(" [name=_token]").val();
 
-    table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-      var data = this.data();
-      productsId.push(data[1]);
-      amounts.push(parseInt(data[2]));
-    } );  
+      table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+        var data = this.data();
+        productsId.push(data[1]);
+        amounts.push(parseInt(data[2]));
+      } );  
 
-    $.ajax({
-      url: "http://localhost:8080/pizzeria/public/api/promotion/create",
-      type: 'POST',
-      data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
-        success: function (data) {
-         toastr.success('La promoción se guardó exitosamente.', 'Guardado!', {timeOut: 5000});
-          $('#promotionTable').DataTable().ajax.reload();
-        },
-        error : function(xhr, status) {
-        toastr.error('La promoción no ha podido ser guardada', 'Error!')
-        }
-    });
-  }
-
+      $.ajax({
+        url: "http://localhost:8080/pizzeria/public/api/promotion/create",
+        type: 'POST',
+        data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
+          success: function (data) {
+           toastr.success('La promoción se guardó exitosamente.', 'Guardado!', {timeOut: 5000});
+            $('#promotionTable').DataTable().ajax.reload();
+          },
+          error : function(xhr, status) {
+          toastr.error('La promoción no ha podido ser guardada', 'Error!')
+          }
+      });
+    }
 </script>
 @stop

@@ -35,7 +35,7 @@
         "inputTypes": [
                 {
             "column":1,
-            "type":"text",
+            "type":"number",
             "options":null
           }
             ]
@@ -95,5 +95,15 @@
             toastr.error('En el campo cantidad debe ingresar un número', 'Error!')
           }
       });
+    }
+
+    //Permite ingresar solo números
+    function isNumber(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      return true;
     }
     

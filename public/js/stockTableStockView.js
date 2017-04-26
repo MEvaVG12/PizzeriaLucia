@@ -30,7 +30,7 @@
       "inputTypes": [
               {
           "column":1,
-          "type":"text",
+          "type":"number",
           "options":null
         }
           ]

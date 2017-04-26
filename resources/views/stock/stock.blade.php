@@ -39,4 +39,5 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/stockTableStockView.js') }}"></script>
+
 @stop

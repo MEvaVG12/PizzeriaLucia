@@ -160,9 +160,7 @@ class PromotionController extends Controller
     {
         $promotions = DB::table('promotions') ->select('promotions.id', 'promotions.name', 'promotions.price')->where('isDeleted', '=', '0')->get();
 
-        $promotions = DB::table('promotions') ->select( 'promotions.name')->where('isDeleted', '=', '0')->get();
-
-       return response()->json($promotions);
+        return response()->json(['success' => true, 'data' => $promotions]);
     }
 
 }

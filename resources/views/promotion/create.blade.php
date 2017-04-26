@@ -13,14 +13,18 @@
     <h1>Crear Promoción</h1>
   </div>
 
-  <div id="errorMain" class="alert alert-danger hidden">
+  <div id="errorDB" class="alert alert-danger hidden alert-dismissable">
+  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+</div>
+
+  <div id="errorMain" class="alert alert-danger hidden alert-dismissable">
     <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
     <ul id="listErrorMain">
 
     </ul>
   </div>
 
-  <div id="success" class="alert alert-success hidden">
+  <div id="success" class="alert alert-success hidden alert-dismissable">
     <strong>Éxito!</strong> La promoción se guardo correctamente.
   </div>
 
@@ -233,6 +237,8 @@
       }
 
       if (errors.length>0) {
+          $("#success").addClass('hidden');
+          $("#errorDB").addClass('hidden');
           $('#listErrorMain').empty();
           $("#errorMain").removeClass('hidden');
           for (var i in errors) {
@@ -241,6 +247,7 @@
 
       } else {
         $("#errorMain").addClass('hidden');
+        $("#errorDB").addClass('hidden');
 
         table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
           var data = this.data();
@@ -253,11 +260,11 @@
           type: 'POST',
           data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
             success: function (data) {
-             toastr.success('La promoción se guardó exitosamente.', 'Guardado!', {timeOut: 5000});
-              $('#promotionTable').DataTable().ajax.reload();
+              $("#success").removeClass('hidden')
+              //$('#promotionTable').DataTable().ajax.reload();
             },
             error : function(xhr, status) {
-            toastr.error('La promoción no ha podido ser guardada', 'Error!')
+               $("#errorDB").removeClass('hidden')
             }
         });
 

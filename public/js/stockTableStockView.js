@@ -1,3 +1,4 @@
+
   $(document).ready(function(){
 
     var table = $('#stockTable').DataTable({
@@ -30,7 +31,7 @@
       "inputTypes": [
               {
           "column":1,
-          "type":"text",
+          "type":"number",
           "options":null
         }
           ]
@@ -44,16 +45,19 @@
     var amount = updatedRow.data().amount;
     var token = $(" [name=_token]").val();
 
+    $("#errorDB").addClass('hidden');
+    $("#success").addClass('hidden')
+
     $.ajax({
       url: "http://localhost:8080/pizzeria/public/api/stock/update/" + id + '',
       type: 'PUT',
       data: {"amount": amount, '_token': token},
         success: function (data) {
-          toastr.success('La cantidad de stock se cambió exitosamente.', 'Guardado!', {timeOut: 5000});
+          $("#success").removeClass('hidden');
           $('#stockTable').DataTable().ajax.reload();
         },
         error : function(xhr, status) {
-          toastr.error('En el campo cantidad debe ingresar un número', 'Error!')
+          $("#errorDB").removeClass('hidden')
         }
     });
   }

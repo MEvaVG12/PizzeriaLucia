@@ -12,6 +12,14 @@
     <h1>Stocks</h1>
   </div>
 
+  <div id="errorDB" class="alert alert-danger hidden alert-dismissable">
+    <strong>Peligro!</strong> El stock no se actualizó correctamente.
+  </div>
+
+  <div id="success" class="alert alert-success hidden alert-dismissable">
+    <strong>Éxito!</strong> El stock se guardo correctamente.
+  </div>
+
   <!-- Table -->
   <form method="POST">
       <input type="hidden" name="_method" value="PUT">
@@ -39,4 +47,5 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/stockTableStockView.js') }}"></script>
+
 @stop

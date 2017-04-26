@@ -13,6 +13,14 @@
       <h1>Productos</h1>
     </div>
 
+    <div id="errorDB" class="alert alert-danger hidden alert-dismissable">
+      <strong>Peligro!</strong> El producto no se actualizó correctamente.
+    </div>
+
+    <div id="success" class="alert alert-success hidden alert-dismissable">
+      <strong>Éxito!</strong> El producto se guardo correctamente.
+    </div>
+
     <div class="panel-body">
       <table class='table table-bordered' id='productTable'>
         <thead>

@@ -29,9 +29,9 @@
   </div>
 
   <form method="POST">
-        
+
     {{ csrf_field() }}
-   
+
     <div class="panel-body">
       <div class='form-group'>
         <label for="title" class='control-label'>Nombre de la promoción: </label>
@@ -110,7 +110,7 @@
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.checkboxes.min.js') }}"></script>
 <script >
   $(document).ready(function(){
-    
+
     var productTable = $('#productTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
@@ -121,14 +121,13 @@
     "deferRender": true,
     "bAutoWidth" : false,
     "columns":[
-        {sWidth : "80%", data:'name', name: 'products.name'}, 
+        {sWidth : "80%", data:'name', name: 'products.name'},
         {visible: false, data:'id', name: 'products.id'},
     ],
     "rowId": 'name',
     "select": true,
     "dom": 'Bfrtip',
   });
-
   var promotionDetailTable = $('#promotionDetailTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
@@ -138,7 +137,7 @@
       "targets": [ 1 ],
       "visible": false,
       "searchable": false
-    }, 
+    },
     { "sWidth" : "8%",
       "targets": [ 3 ],
       "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>",
@@ -149,15 +148,12 @@
     "rowId": 'name',
     "dom": 'Bfrtip',
   });
-
   var counter = 1; //contiene la cantidad de filas de la tabla
-
   //Borra la fila en la table
   $('#promotionDetailTable tbody').on( 'click', 'button', function () {
      promotionDetailTable.row( $(this).parents('tr') ).remove().draw();
       counter--;
   } );
-
   //Permite seleccionar solo una fila de la tabla
   $('#productTable tbody').on( 'click', 'tr', function () {
       if ( $(this).hasClass('selected') ) {
@@ -167,18 +163,15 @@
         $(this).addClass('selected');
       }
   } );
-
   $('#addProduct').on( 'click', function () {
       var errors = [];
       var rowData = productTable.rows('.selected').data()[0];
-
       //Valida que todos los datos están ingresados
       if ($("#amount").val() === '') {
-        errors.push('El campo cantidad es requerido')  
+        errors.push('El campo cantidad es requerido')
       } if ( $('#productTable tbody tr.selected').length < 1) {
         errors.push('Seleccione un producto en la tabla')
       }
-
       console.log(errors);
       if (errors.length>0) {
           $('#listErrorModal').empty();
@@ -186,30 +179,24 @@
           for (var i in errors) {
             $("#errorModal ul").append('<li><span>'+ errors[i] + '</span></li>');
           }
-
       } else {
           $("#errorModal").addClass('hidden');
-
           //Agrega en la tabla de detalle de promoción los datos seleccionados
           promotionDetailTable.row.add( [
               rowData['name'],
               rowData['id'],
               $("#amount").val()
           ] ).draw( false );
-     
-          counter++;
 
+          counter++;
           //limpia modelo
           $("#amount").val('');
           productTable.rows('tr.selected').deselect();
-
           $('#myModal').modal('toggle');
       }
   } );
 
-  
 });
-
   //Permite ingresar solo números
   function isNumber(evt) {
       evt = (evt) ? evt : window.event;
@@ -219,16 +206,14 @@
       }
       return true;
     }
-
   //Recoge los datos para ser guardados en la bd
    function save()
-    {    
+    {
       var errors = [];
       var table = $('#promotionDetailTable').DataTable();
       var productsId = [];
       var amounts = [];
       var token = $(" [name=_token]").val();
-
       //Valida que todos los datos están ingresados
       if ($("#name").val() === '') {
         errors.push('El campo nombre es requerido')
@@ -237,7 +222,6 @@
       }  if (table.rows().data().length<1) {
         errors.push('Ingrese al menos un producto en la tabla')
       }
-
       if (errors.length>0) {
           $("#success").addClass('hidden');
           $("#errorDB").addClass('hidden');
@@ -246,18 +230,15 @@
           for (var i in errors) {
             $("#errorMain ul").append('<li><span>'+ errors[i] + '</span></li>');
           }
-
       } else {
         $("#errorMain").addClass('hidden');
         $("#errorDB").addClass('hidden');
         $("#success").addClass('hidden')
-
         table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
           var data = this.data();
           productsId.push(data[1]);
           amounts.push(parseInt(data[2]));
-         } );  
-
+         } );
         $.ajax({
           url: "http://localhost:8080/pizzeria/public/api/promotion/create",
           type: 'POST',
@@ -270,7 +251,6 @@
                $("#errorDB").removeClass('hidden')
             }
         });
-
         //limpia pantalla
         $("#name").val('');
         $("#price").val('');

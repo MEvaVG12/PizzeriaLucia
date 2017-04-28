@@ -26,8 +26,9 @@ Route::get('stocks', function(){
   return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
             ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
 });
-Route::get('products','ProductController@showProducts');
 
+Route::get('products','ProductController@showProducts');
+Route::post('promotion/{id}/products','PromotionController@showProducts');
 
 //Route::get('stocks','StockController@showStock');
 Route::post('ingredients','ProductController@showIngredients');

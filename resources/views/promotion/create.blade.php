@@ -206,6 +206,8 @@
           $('#myModal').modal('toggle');
       }
   } );
+
+  
 });
 
   //Permite ingresar solo números

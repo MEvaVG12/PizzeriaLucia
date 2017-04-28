@@ -54,5 +54,3 @@
     <srcipt type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="{{ URL::asset('js/productTableProductView.js') }}"></script>
 @stop
-
-

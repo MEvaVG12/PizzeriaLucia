@@ -49,7 +49,7 @@
     $("#success").addClass('hidden')
 
     $.ajax({
-      url: "http://localhost:8080/pizzeria/public/api/stock/update/" + id + '',
+      url: "api/stock/update/" + id + '',
       type: 'PUT',
       data: {"amount": amount, '_token': token},
         success: function (data) {
@@ -61,4 +61,3 @@
         }
     });
   }
-  

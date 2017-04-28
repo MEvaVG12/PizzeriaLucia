@@ -41,18 +41,18 @@
         <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
       </div>
           <div class="modal-body">
-       
+
        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete this Record?</div>
-       
+
       </div>
         <div class="modal-footer ">
         <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
       </div>
         </div>
-    <!-- /.modal-content --> 
+    <!-- /.modal-content -->
   </div>
-      <!-- /.modal-dialog --> 
+      <!-- /.modal-dialog -->
     </div>
 @stop
 
@@ -61,6 +61,17 @@
 <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
+<script>
+    // global app configuration object
+    var config = {
+        routes: [
+            { promotionIndex: "{{ URL::to('api.promotion.index') }}" ,
+              promotionDelete: "{{ URL::to('api.promotion.delete') }}" ,
+              promotionDetails: "{{ URL::to('api.promotion.index.promotionDetails') }}"
+            }
+        ]
+    };
+</script>
 <script>$(document).ready(function(){
 
   var tableP = $('#promotionTable').DataTable({
@@ -69,7 +80,7 @@
     },
     "processing": true,
    // "serverSide": true,
-    "ajax": "http://localhost:8080/pizzeria/public/api/promotion/index",
+    "ajax": config.routes.promotionIndex,
     "deferRender": true,
     "bAutoWidth" : false,
     "columns":[
@@ -103,7 +114,7 @@
       //$('#productTable').destroy();
       $('#productTable').DataTable({
           "ajax": {
-              "url": "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
+              "url": config.routes.promotionDetails,
               "type": "post",
               "data" : {
                  '_token': token,
@@ -130,13 +141,13 @@
     } );
 });
 
- function fun_delete(id){    
+ function fun_delete(id){
     var token = $(" [name=_token]").val();
     var tableP = $('#promotionTable').DataTable();
     console.log(this);
 
     $.ajax({
-      url: "http://localhost:8080/pizzeria/public/api/promotion/delete/" + id + '',
+      url: config.routes.promotionDelete + id + '',
       type: 'PUT',
       data: {'_token': token},
         success: function (data) {

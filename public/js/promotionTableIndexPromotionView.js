@@ -5,7 +5,7 @@ $(document).ready(function(){
     },
     "processing": true,
    // "serverSide": true,
-    "ajax": "http://localhost:8080/pizzeria/public/api/promotion/index",
+    "ajax": "api/promotion/index",
     "deferRender": true,
     "bAutoWidth" : false,
     "columns":[
@@ -33,7 +33,7 @@ $(document).ready(function(){
       var token = $(" [name=_token]").val();
       $('#productTable').DataTable({
           "ajax": {
-              "url": "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
+              "url": "api/promotion/index/promotionDetails",
               "type": "post",
               "data" : {
                  '_token': token,

@@ -42,4 +42,14 @@
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/promotionTableDeletePromotionView.js') }}"></script>
+<script>
+    // global app configuration object
+    var config = {
+        routes: [
+            { promotionIndex: "{{ URL::to('api.promotion.index') }}" ,
+              promotionDelete: "{{ URL::to('api.promotion.delete') }}"
+            }
+        ]
+    };
+</script>
 @stop

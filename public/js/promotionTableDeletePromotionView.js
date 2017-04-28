@@ -5,7 +5,7 @@ $(document).ready(function(){
     },
     "processing": true,
    // "serverSide": true,
-    "ajax": "http://localhost:8080/pizzeria/public/api/promotion/index",
+    "ajax": "api/promotion/index",
     "deferRender": true,
     "bAutoWidth" : false,
     "columns":[
@@ -25,12 +25,12 @@ $(document).ready(function(){
 });
 
 
- function fun_delete(){    
+ function fun_delete(){
     var id = 1; //TODO generalizar
     var token = $(" [name=_token]").val();
 
     $.ajax({
-      url: "http://localhost:8080/pizzeria/public/api/promotion/delete/" + id + '',
+      url: "api/promotion/delete/" + id + '',
       type: 'PUT',
       data: {'_token': token},
         success: function (data) {

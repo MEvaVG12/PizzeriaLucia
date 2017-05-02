@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::GET('promotion/create','PromotionController@create');
   Route::GET('promotion/index','PromotionController@index');
   Route::GET('promotion/show/{id}','PromotionController@show');
+  Route::GET('promotion/edit/{id}','PromotionController@edit');
   Route::GET('promotion/delete','PromotionController@delete');
   Route::GET('stock','StockController@index');
 });

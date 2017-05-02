@@ -37,3 +37,4 @@ Route::get('promotion/index','PromotionController@showPromotions');
 Route::post('promotion/index/promotionDetails','PromotionController@showPromotionDetails');
 Route::put('product/update/{id}','ProductController@update');
 Route::put('promotion/delete/{id}','PromotionController@destroy');
+Route::put('promotion/update/{id}','PromotionController@update');

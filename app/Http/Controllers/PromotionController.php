@@ -101,7 +101,8 @@ class PromotionController extends Controller
      */
     public function edit($id)
     {
-      return view('catalog.edit', array('product'=>response()->json(Product::findOrFail($id))));
+        $promotion = Promotion::findOrFail($id);
+        return View('promotion.edit' , ['promotion' => $promotion]);
     }
 
     /**
@@ -113,15 +114,23 @@ class PromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $d = PromotionDetail::where('promotion_id', $id);
-      $d->delete();
+        /*$this->validate($request, [
+            'price' => 'required| numeric',
+        ]);*/
 
-      $p = Promotion::findOrFail($id);
-      $p->name = $request->input('name');
-      $p->price = $request->input('price');
-      $p->save();
+        $promotion = Promotion::findOrFail($id);
+        $promotion->price = $request->input('price');
 
-      return response()->json( ['error' => false,'msg' => 'La promoción ha sido modificada exitosamente!' ] );
+        $productsUpdate = $request->input('productsUpdate');
+
+        foreach($productsUpdate as $productId)
+        {
+            $promotionDetail = PromotionDetail::findOrFail($productId['id']);
+            $promotionDetail->amount = $productId['newValue'];
+            $promotionDetail->save();
+        }
+
+        $promotion->save();
     }
 
         /**

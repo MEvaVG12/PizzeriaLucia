@@ -10,6 +10,21 @@
       <h1>Mostrar Promoción</h1>
     </div>
 
+    <div id="errorDB" class="alert alert-danger hidden alert-dismissable">
+      <strong>Peligro!</strong> La promoción no se actualizó correctamente.
+    </div>
+
+    <div id="errorMain" class="alert alert-danger hidden alert-dismissable">
+      <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
+      <ul id="listErrorMain">
+
+      </ul>
+    </div>
+
+  <div id="success" class="alert alert-success hidden alert-dismissable">
+    <strong>Éxito!</strong> La promoción se guardo correctamente.
+  </div>
+
     <div class="panel-body">
       <div class='form-group'>
         <label for="title" class='control-label'>Nombre de la promoción: </label>
@@ -169,12 +184,18 @@ $(document).ready(function(){
                $("#errorDB").removeClass('hidden')
             }
         });
-        //limpia pantalla
-        $("#name").val('');
-        $("#price").val('');
-        table.clear().draw();
       }
     }
+
+      //Permite ingresar solo números
+      function isNumber(evt) {
+          evt = (evt) ? evt : window.event;
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+          }
+          return true;
+        }
 
 </script>
 @stop

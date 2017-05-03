@@ -114,9 +114,9 @@ class PromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*$this->validate($request, [
-            'price' => 'required| numeric',
-        ]);*/
+        $this->validate($request, [
+            'price' => 'required'
+        ]);
 
         $promotion = Promotion::findOrFail($id);
         $promotion->price = $request->input('price');

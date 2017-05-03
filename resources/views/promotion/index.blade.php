@@ -16,6 +16,7 @@
            <th>Precio</th>
            <th>Editar</th>
            <th>Borrar</th>
+           <th>Consultar</th>
         </thead>
       </table>
     </div>

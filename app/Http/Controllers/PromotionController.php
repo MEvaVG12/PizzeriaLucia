@@ -89,7 +89,8 @@ class PromotionController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Product::findOrFail($id));
+        $promotion = Promotion::findOrFail($id);
+        return View('promotion.show' , ['promotion' => $promotion]);
     }
 
     /**
@@ -100,7 +101,8 @@ class PromotionController extends Controller
      */
     public function edit($id)
     {
-      return view('catalog.edit', array('product'=>response()->json(Product::findOrFail($id))));
+        $promotion = Promotion::findOrFail($id);
+        return View('promotion.edit' , ['promotion' => $promotion]);
     }
 
     /**
@@ -112,15 +114,23 @@ class PromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $d = PromotionDetail::where('promotion_id', $id);
-      $d->delete();
+        /*$this->validate($request, [
+            'price' => 'required| numeric',
+        ]);*/
 
-      $p = Promotion::findOrFail($id);
-      $p->name = $request->input('name');
-      $p->price = $request->input('price');
-      $p->save();
+        $promotion = Promotion::findOrFail($id);
+        $promotion->price = $request->input('price');
 
-      return response()->json( ['error' => false,'msg' => 'La promoción ha sido modificada exitosamente!' ] );
+        $productsUpdate = $request->input('productsUpdate');
+
+        foreach($productsUpdate as $productId)
+        {
+            $promotionDetail = PromotionDetail::findOrFail($productId['id']);
+            $promotionDetail->amount = $productId['newValue'];
+            $promotionDetail->save();
+        }
+
+        $promotion->save();
     }
 
         /**
@@ -161,6 +171,18 @@ class PromotionController extends Controller
         $promotions = DB::table('promotions') ->select('promotions.id', 'promotions.name', 'promotions.price')->where('isDeleted', '=', '0')->get();
 
         return response()->json(['success' => true, 'data' => $promotions]);
+    }
+
+        /**
+     * Display products list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showProducts()
+    {
+        $promotionDetail = DB::table('promotion_details')->join('products', 'products.id', '=', 'promotion_details.product_id') ->select('promotion_details.id', 'promotion_details.amount as cantidad', 'products.name as productName')->where('promotion_details.promotion_id', '=', '11')->get();
+
+        return response()->json(['success' => true, 'data' => $promotionDetail]);
     }
 
 }

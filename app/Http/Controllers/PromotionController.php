@@ -65,18 +65,18 @@ class PromotionController extends Controller
         $productsId = $request->input('productsId');
         $amounts = $request->input('amounts');
 
-        $i= 0;
-        foreach($productsId as $productId)
+        if (is_array($productsId) )
         {
-            $product = Product::findOrFail($productId);
-            $d = new PromotionDetail();
-            $d->amount = $amounts[$i];
-            $d->product()->associate($product);
-            $d->promotion()->associate($p);
-            $d->save();
-            $i++;
+            foreach($productsId as $productId)
+            {
+                $product = Product::findOrFail($productId);
+                $d = new PromotionDetail();
+                $d->amount = $amounts[$i];
+                $d->product()->associate($product);
+                $d->promotion()->associate($p);
+                $d->save();
+            }
         }
-
      return response()->json(['success' => true]);
 
     }
@@ -122,12 +122,22 @@ class PromotionController extends Controller
         $promotion->price = $request->input('price');
 
         $productsUpdate = $request->input('productsUpdate');
+        if (is_array($productsUpdate) ){
+            foreach($productsUpdate as $productId)
+            {
+                $promotionDetail = PromotionDetail::findOrFail($productId['id']);
+                $promotionDetail->amount = $productId['newValue'];
+                $promotionDetail->save();
+            }
+        }
 
-        foreach($productsUpdate as $productId)
-        {
-            $promotionDetail = PromotionDetail::findOrFail($productId['id']);
-            $promotionDetail->amount = $productId['newValue'];
-            $promotionDetail->save();
+        $productsDelete = $request->input('productsDelete');
+        if (is_array($productsDelete) ){
+            foreach($productsDelete as $productId)
+            {
+                $promotionDetail = PromotionDetail::findOrFail($productId['id']);
+                $promotionDetail->delete();
+            }
         }
 
         $promotion->save();

@@ -19,20 +19,22 @@
         <label for="title" class='control-label'>Precio de la promoción: </label>
         <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' value= {{ $promotion->price }}>
       </div>
-    </div>
-    <div class="form-group">
-        <strong>Productos:</strong>
-            <div class="panel-body">
-              <form method="POST">
-                {{ csrf_field() }}
-                  <table class='table table-bordered' id='productTable'>
-                    <thead>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
-                    </thead>
-                  </table>
-              </form>
-            </div>
+      <div class="form-group">
+          <strong>Productos:</strong>
+              <div class="panel-body">
+                <form method="POST">
+                  {{ csrf_field() }}
+                    <table class='table table-bordered' id='productTable'>
+                      <thead>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                      </thead>
+                    </table>
+                </form>
+              </div>
+      </div>
+
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-right">
@@ -52,12 +54,9 @@
   var promotion = {!! json_encode($promotion->toArray()) !!};
   var id = promotion.id;
   var productsUpdate = [];
-
+  var productsDelete = [];
 
 $(document).ready(function(){
-
-
-
 
   var token = $(" [name=_token]").val();
     var tableP =  $('#productTable').DataTable({
@@ -75,6 +74,11 @@ $(document).ready(function(){
           "columns":[
               {sWidth : "50%", data:'productName', name: 'products.name'},
               {sWidth : "50%", data:'amount', name: 'promotion_details.amount'},
+              {"className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>"
+              },
           ],
       });
 
@@ -98,6 +102,18 @@ $(document).ready(function(){
           }
             ]
         });
+
+        //Borra la fila en la table
+        $('#productTable tbody').on( 'click', 'button', function () {
+          if ( confirm( "¿Esta seguro que desea eliminar esta promoción?" ) ) {
+            var data = tableP.row( $(this).parents('tr') ).data();
+            var product = {id:data['id']};
+            productsDelete.push(product);
+            console.log(productsDelete);
+            tableP.row( $(this).parents('tr') ).remove().draw();
+          }
+        } );
+
   
 });
 
@@ -144,7 +160,7 @@ $(document).ready(function(){
         $.ajax({
          url: "http://localhost:8080/pizzeria/public/api/promotion/update" + '/' + id + '',
           type: 'PUT',
-          data: {"price": $("#price").val(),'_token': token, 'productsUpdate': productsUpdate},
+          data: {"price": $("#price").val(),'_token': token, 'productsUpdate': productsUpdate, 'productsDelete': productsDelete},
             success: function (data) {
               $("#success").removeClass('hidden')
               //$('#promotionTable').DataTable().ajax.reload();

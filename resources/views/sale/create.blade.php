@@ -10,11 +10,11 @@
 @section('content')
 
   <div class="page-header">
-    <h1>Crear Promoción</h1>
+    <h1>Venta</h1>
   </div>
 
   <div id="errorDB" class="alert alert-danger hidden alert-dismissable">
-    <strong>Peligro!</strong> La promoción no se actualizó correctamente.
+    <strong>Peligro!</strong> La venta no se actualizó correctamente.
   </div>
 
   <div id="errorMain" class="alert alert-danger hidden alert-dismissable">
@@ -25,7 +25,7 @@
   </div>
 
   <div id="success" class="alert alert-success hidden alert-dismissable">
-    <strong>Éxito!</strong> La promoción se guardo correctamente.
+    <strong>Éxito!</strong> La venta se guardo correctamente.
   </div>
 
   <form method="POST">
@@ -34,21 +34,31 @@
 
     <div class="panel-body">
       <div class='form-group'>
-        <label for="title" class='control-label'>Nombre de la promoción: </label>
-        <input required class='form-control' placeholder='Ingrese nombre de la promoción' type='text' name='name' id='name' >
+        <label for="title" class='control-label'>Fecha de pedido: </label>
+        <input required  readonly="readonly" class='form-control' type='text' name='date' id='date'>
       </div>
       <div class='form-group'>
-        <label for="title" class='control-label'>Precio de la promoción: </label>
-        <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price' >
+        <label for="title" class='control-label'>Hora de pedido: </label>
+        <input required  readonly="readonly" class='form-control' type='time' name='timeP' id='timeP'>
       </div>
       <div class='form-group'>
-          <label for="title" class='control-label'>Productos: </label>
-           <table class='table table-bordered' id='promotionDetailTable'>
+        <label for="title" class='control-label'>Cliente: </label>
+        <input required class='form-control' placeholder='Ingrese nombre del cliente' type='text' name='name' id='name' >
+      </div>
+      <div class='form-group'>
+        <label for="title" class='control-label'>Para Hora: </label>
+        <input required  class='form-control' type='time' name='time' id='time' autocomplete="on" >
+      </div>
+      <div class='form-group'>
+          <label for="title" class='control-label'>Detalle Pedido: </label>
+           <table class='table table-bordered' id='saleDetailTable'>
               <thead>
-                <th>Producto</th>
-                <th>IDProductos</th>
-                <th>Cantidad</th>
-                <th></th>
+                <th scope="col">Producto</th>
+                <th scope="col">IDProductos</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">Subtotal</th>
+                <th scope="row">Total<th>
              </thead>
            </table>
       </div>
@@ -100,6 +110,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 text-right">
       <button class="btn btn-primary"  onclick='save()'>Guardar</button>
     </div>
+
 @stop
 
 @section('javascript')
@@ -109,6 +120,22 @@
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.checkboxes.min.js') }}"></script>
 <script >
+
+  //mostrar fecha actual
+  var today = new Date();
+  document.getElementById('date').value = today.getDate() + "/" + (today.getMonth() +1) + "/" + today.getFullYear();
+
+  //mostrar hora actual
+  h=""+today.getHours();
+  if (h<10){
+    h="0"+ h
+  }
+  m=""+today.getMinutes();
+  if (m<10){
+    m="0"+ m
+  }
+  document.getElementById('time').value = h + ":" + m;
+  document.getElementById('timeP').value = h + ":" + m;
   $(document).ready(function(){
 
     var productTable = $('#productTable').DataTable({
@@ -123,12 +150,13 @@
     "columns":[
         {sWidth : "80%", data:'name', name: 'products.name'},
         {visible: false, data:'id', name: 'products.id'},
+        {sWidth : "20%", data:'price', name: 'products.price'},
     ],
     "rowId": 'name',
     "select": true,
     "dom": 'Bfrtip',
   });
-  var promotionDetailTable = $('#promotionDetailTable').DataTable({
+  var promotionDetailTable = $('#saleDetailTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
     },
@@ -185,7 +213,9 @@
           promotionDetailTable.row.add( [
               rowData['name'],
               rowData['id'],
-              $("#amount").val()
+              $("#amount").val(),
+              rowData['price'],
+              rowData['price'] * $("#amount").val(),
           ] ).draw( false );
 
           counter++;
@@ -257,5 +287,6 @@
         table.clear().draw();
       }
     }
+
 </script>
 @stop

@@ -27,8 +27,6 @@ Route::get('stocks', function(){
             ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
 });
 Route::get('products','ProductController@showProducts');
-
-
 //Route::get('stocks','StockController@showStock');
 Route::post('ingredients','ProductController@showIngredients');
 

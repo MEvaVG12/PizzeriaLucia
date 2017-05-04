@@ -13,10 +13,7 @@
           <a href="{{ url('promotion/create') }}">Nueva</a>
         </li>
         <li>
-          <a href="{{ url('promotion/index') }}">Consultar</a>
-        </li>
-        <li>
-          <a href="{{ url('promotion/delete') }}">Eliminar</a>
+          <a href="{{ url('promotion/index') }}">Ver</a>
         </li>
       </ul>
     </li>

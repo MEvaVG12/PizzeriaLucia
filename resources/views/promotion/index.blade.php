@@ -1,7 +1,9 @@
 @extends('layouts.master')
 
 @section('links')
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
 @stop
 
 @section('content')
@@ -12,11 +14,11 @@
     <div class="panel-body">
       <table class='table table-bordered' id='promotionTable'>
         <thead>
-           <th>Nombre</th>
-           <th>Precio</th>
-           <th>Editar</th>
-           <th>Borrar</th>
-           <th>Consultar</th>
+           <th class="text-center">Nombre</th>
+           <th class="text-center">Precio</th>
+           <th class="text-center">Editar</th>
+           <th class="text-center">Borrar</th>
+           <th class="text-center">Consultar</th>
         </thead>
       </table>
     </div>
@@ -27,8 +29,8 @@
         <h3>Promoción formada por:</h3>
         <table class='table table-bordered' id='productTable'>
           <thead>
-            <th>Producto</th>
-            <th>Cantidad</th>
+            <th class="text-center">Producto</th>
+            <th class="text-center">Cantidad</th>
           </thead>
         </table>
       </div>
@@ -79,63 +81,35 @@
         {"className":      'details-control',
           "orderable":      false,
           "data":           null,
-          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Edit'><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-pencil'></span></button></p>"
+          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Editar'><button  id='EditBtn' class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' ><span class='glyphicon glyphicon-pencil'></span></button></p>"
         },
         {"className":      'details-control',
           "orderable":      false,
           "data":           null,
-          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Delete'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>"
+          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>"
+        },
+        {"className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Cosultar'><button id='ShowBtn' class='btn btn-info btn-xs' data-title='Show' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-search'></span></button></p>"
         }
     ],
-    "rowId": 'name',
-    "select": true,
-    "dom": 'Bfrtip',
   });
 
-  $('#promotionTable tbody').on( 'click', 'tr', function () {
-    if ( $(this).hasClass('selected') ) {//cuando deselecciono
-        $(this).removeClass('selected');
-        document.getElementById('products').style.display = "none";
-    }
-    else {
-      $id = tableP.row(this).data()['id'];
-      tableP.$('tr.selected').removeClass('selected');
-      $(this).addClass('selected');
-      var token = $(" [name=_token]").val();
-      //$('#productTable').destroy();
-      $('#productTable').DataTable({
-          "ajax": {
-              "url": "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
-              "type": "post",
-              "data" : {
-                 '_token': token,
-                  "id" :  $id ,
-              }
-          },
-          "language": {
-              "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
-          },
-          "columns":[
-              {sWidth : "50%", data:'productName', name: 'products.name'},
-              {sWidth : "50%", data:'amount', name: 'promotion_details.amount'},
-          ],
-      });
-      console.log($id)
-      document.getElementById('products').style.display = "block";
-    }
-  } );
-   /**$('#promotionTable tbody').on( 'click', 'button', function () {
-      var data = tableP.row( $(this).parents('tr') ).data();
-      console.log(this);
-      console.log(data['id']);
-      fun_delete(data['id']);
-    });**/
-
     $('#promotionTable tbody').on( 'click', 'button', function () {
-      if ( confirm( "¿Esta seguro que desea eliminar esta promoción?" ) ) {
-        var data = tableP.row( $(this).parents('tr') ).data();
-        fun_delete(data['id']);
+      var button = this;
+      var id = tableP.row( $(this).parents('tr') ).data()['id'];
+      if (button['id'] == 'deleteBtn'){
+        if ( confirm( "¿Esta seguro que desea eliminar esta promoción?" ) ) {
+
+          fun_delete(id);
+        }
+      } else if (button['id'] == 'EditBtn'){
+          window.location.href = "{{url('promotion/edit')}}" + "/" + id;
+      } else if(button['id'] == 'ShowBtn'){
+          window.location.href = "{{url('promotion/show')}}" + "/" + id;
       }
+
     } );   
 });
 

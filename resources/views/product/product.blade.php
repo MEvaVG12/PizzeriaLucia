@@ -3,6 +3,7 @@
 @section('links')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
+<link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
 @stop
 
 @section('content')
@@ -22,8 +23,8 @@
     <div class="panel-body">
       <table class='table table-bordered' id='productTable'>
         <thead>
-           <th>Nombre</th>
-           <th>Precio</th>
+           <th class="text-center">Nombre</th>
+           <th class="text-center">Precio</th>
         </thead>
       </table>
     </div>

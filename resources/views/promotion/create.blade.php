@@ -5,6 +5,7 @@
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 <link href="{{ URL::asset('css/dataTables.checkboxes.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 @stop
 
 @section('content')
@@ -45,10 +46,10 @@
           <label for="title" class='control-label'>Productos: </label>
            <table class='table table-bordered' id='promotionDetailTable'>
               <thead>
-                <th>Producto</th>
-                <th>IDProductos</th>
-                <th>Cantidad</th>
-                <th></th>
+                <th class="text-center">Producto</th>
+                <th class="text-center">IDProductos</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Borrar</th>
              </thead>
            </table>
       </div>
@@ -83,7 +84,7 @@
                       <p> Producto: </p>
                       <table class='table table-bordered' id='productTable'>
                         <thead>
-                          <th>Producto</th>
+                          <th class="text-center">Producto</th>
                         </thead>
                       </table>
                     </div>
@@ -140,7 +141,7 @@
     },
     { "sWidth" : "8%",
       "targets": [ 3 ],
-      "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>",
+      "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
       "searchable": false
     }],
     "deferRender": true,

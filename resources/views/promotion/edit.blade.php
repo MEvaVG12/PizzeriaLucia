@@ -1,12 +1,14 @@
 @extends('layouts.master')
 
 @section('links')
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
+<link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 @stop
 
 @section('content')
-    <div class="page-header">
+
+   <div class="page-header">
       <h1>Mostrar Promoción</h1>
     </div>
 
@@ -25,7 +27,7 @@
     <strong>Éxito!</strong> La promoción se guardo correctamente.
   </div>
 
-    <div class="panel-body">
+<div class="panel-body">
       <div class='form-group'>
         <label for="title" class='control-label'>Nombre de la promoción: </label>
         {{ $promotion->name }}
@@ -41,68 +43,145 @@
                   {{ csrf_field() }}
                     <table class='table table-bordered' id='productTable'>
                       <thead>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th></th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Borrar</th>
                       </thead>
                     </table>
                 </form>
               </div>
       </div>
-
     </div>
+
+
+    <!-- Button trigger modal -->
+    <a href="#myModal" role="button" class="btn btn-large btn-primary" data-toggle="modal">Agregar producto</a>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Agregar producto</h4>
+                </div>
+                <div id="errorModal" class="alert alert-danger hidden">
+                    <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
+                    <ul id="listErrorModal">
+
+                    </ul>
+                </div>
+                <div class="modal-body">
+                    <div class='form-group'>
+                      <p>Cantidad</p>
+                      <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
+                    </div>
+                    <div class='form-group'>
+                      <p> Producto: </p>
+                      <table class='table table-bordered' id='productTableNew'>
+                        <thead>
+                          <th class="text-center">Producto</th>
+                        </thead>
+                      </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" name='addProduct' id='addProduct' class="btn btn-primary">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-right">
       <button class="btn btn-primary"  onclick='save()'>Guardar</button>
     </div>
-
-
 @stop
 
 @section('javascript')
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
-<script>
+<script >
+//Comentario, el id en la tabla representa el id del producto si se agrega uno nuevo. Sino es el id del detalle de promoción que se había creado anteriormente
   var promotion = {!! json_encode($promotion->toArray()) !!};
   var id = promotion.id;
   var productsUpdate = [];
-  var productsDelete = [];
+  var productsDelete = [];//
+  var productsNew = [];//
+  var productsExists = [] ;//
 
-$(document).ready(function(){
+  $(document).ready(function(){
 
-  var token = $(" [name=_token]").val();
-    var tableP =  $('#productTable').DataTable({
-          "ajax": {
-              "url": "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
-              "type": "post",
-              "data" : {
+     var tableP = $('#productTable').DataTable({
+    "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+    },
+    "columnDefs": [
+    {
+      "targets": [ 0 ],
+      "visible": false,
+      "searchable": false
+    },
+    { "sWidth" : "8%",
+      "targets": [ 3 ],
+      "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+      "searchable": false
+    }],
+    "deferRender": true,
+    "bAutoWidth" : false,
+    "rowId": 'name',
+    "dom": 'Bfrtip',
+  });
+
+    var token = $(" [name=_token]").val();
+    $.ajax({
+            type: "POST",
+            data : {
                  '_token': token,
                   "id" :  id ,
-              }
-          },
-          "language": {
-              "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
-          },
-          "columns":[
-              {sWidth : "50%", data:'productName', name: 'products.name'},
-              {sWidth : "50%", data:'amount', name: 'promotion_details.amount'},
-              {"className":      'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>"
               },
-          ],
-      });
+            url: "http://localhost:8080/pizzeria/public/api/promotion/index/promotionDetails",
+    }).done(function(data){
+            productsExists = data['data'];
+            console.log(productsExists);
+            //Agrega productos existentes a tabla 
+            for (var key in productsExists) {
+              console.log(productsExists[key]);
+              tableP.row.add( [
+                  productsExists[key]['id'],productsExists[key]['productName'], productsExists[key]['amount']
+              ] ).draw( false );
+            }
+    });
+      
+    var productTable = $('#productTableNew').DataTable({
+    "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+    },
+    "processing": true,
+    //"serverSide": true,
+    "ajax": "http://localhost:8080/pizzeria/public/api/products",
+    "deferRender": true,
+    "bAutoWidth" : false,
+    "columns":[
+        {sWidth : "80%", data:'name', name: 'products.name'},
+        {visible: false, data:'id', name: 'products.id'},
+    ],
+    "rowId": 'name',
+    "select": true,
+    "dom": 'Bfrtip',
+  });
+  
 
-      tableP.MakeCellsEditable({
+    tableP.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             "inputCss":'my-input-class',
-            "columns": [1],
+            "columns": [2],
             "allowNulls": {
-                "columns": [1],
+                "columns": [2],
                 "errorClass": 'error'
             },
             "confirmationButton": {
@@ -111,7 +190,7 @@ $(document).ready(function(){
             },
         "inputTypes": [
                 {
-            "column":1,
+            "column":2,
             "type":"number",
             "options":null
           }
@@ -122,19 +201,60 @@ $(document).ready(function(){
         $('#productTable tbody').on( 'click', 'button', function () {
           if ( confirm( "¿Esta seguro que desea eliminar esta promoción?" ) ) {
             var data = tableP.row( $(this).parents('tr') ).data();
-            var product = {id:data['id']};
+            var product = {id:data[0]};
             productsDelete.push(product);
-            console.log(productsDelete);
             tableP.row( $(this).parents('tr') ).remove().draw();
           }
         } );
 
-  
+  //Permite seleccionar solo una fila de la tabla
+  $('#productTable tbody').on( 'click', 'tr', function () {
+      if ( $(this).hasClass('selected') ) {
+        $(this).removeClass('selected');
+      } else {
+        productTable.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+      }
+  } );
+
+  $('#addProduct').on( 'click', function () {
+      var errors = [];
+      var rowData = productTable.rows('.selected').data()[0];
+      //Valida que todos los datos están ingresados
+      if ($("#amount").val() === '') {
+        errors.push('El campo cantidad es requerido')
+      } if ( $('#productTableNew tbody tr.selected').length < 1) {
+        errors.push('Seleccione un producto en la tabla')
+      }
+      console.log(errors);
+      if (errors.length>0) {
+          $('#listErrorModal').empty();
+          $("#errorModal").removeClass('hidden');
+          for (var i in errors) {
+            $("#errorModal ul").append('<li><span>'+ errors[i] + '</span></li>');
+          }
+      } else {
+          $("#errorModal").addClass('hidden');
+          //Agrega en la tabla de detalle de promoción los datos seleccionados
+          tableP.row.add( [
+              rowData['id'],
+              rowData['name'],
+              $("#amount").val()
+          ] ).draw( false );
+          var product = {id:rowData['id'], amount:$("#amount").val()};
+          productsNew.push(product);
+          //limpia modelo
+          $("#amount").val('');
+          productTable.rows('tr.selected').deselect();
+          $('#myModal').modal('toggle');
+      }
+  } );
+
 });
 
- function myCallbackFunction(updatedCell, updatedRow, oldValue) {
-      var id = updatedRow.data().id;
-      var amount = updatedRow.data().amount;
+  function myCallbackFunction(updatedCell, updatedRow, oldValue) {
+      var id = updatedRow.data()[0];
+      var amount = updatedRow.data()[2];
       var token = $(" [name=_token]").val();
       //TODO si existe cambiar, no agregar
       var product = {newValue:amount, id:id};
@@ -175,10 +295,9 @@ $(document).ready(function(){
         $.ajax({
          url: "http://localhost:8080/pizzeria/public/api/promotion/update" + '/' + id + '',
           type: 'PUT',
-          data: {"price": $("#price").val(),'_token': token, 'productsUpdate': productsUpdate, 'productsDelete': productsDelete},
+          data: {"price": $("#price").val(),'_token': token, 'productsUpdate': productsUpdate, 'productsDelete': productsDelete, 'productsNew' : productsNew},
             success: function (data) {
               $("#success").removeClass('hidden')
-              //$('#promotionTable').DataTable().ajax.reload();
             },
             error : function(xhr, status) {
                $("#errorDB").removeClass('hidden')

@@ -2,6 +2,7 @@
 
 @section('links')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
 @stop
 
 @section('content')
@@ -31,8 +32,8 @@
                           {{ csrf_field() }}
                             <table class='table table-bordered' id='productTable'>
                               <thead>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
+                                <th class="text-center">Producto</th>
+                                <th class="text-center">Cantidad</th>
                               </thead>
                             </table>
                         </form>
@@ -73,6 +74,7 @@
               {sWidth : "50%", data:'productName', name: 'products.name'},
               {sWidth : "50%", data:'amount', name: 'promotion_details.amount'},
           ],
+          "dom": 'Bfrtip',
       });
   
 });

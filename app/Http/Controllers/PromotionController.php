@@ -65,6 +65,7 @@ class PromotionController extends Controller
         $productsId = $request->input('productsId');
         $amounts = $request->input('amounts');
 
+        $i= 0;
         if (is_array($productsId) )
         {
             foreach($productsId as $productId)
@@ -75,6 +76,7 @@ class PromotionController extends Controller
                 $d->product()->associate($product);
                 $d->promotion()->associate($p);
                 $d->save();
+                $i++;
             }
         }
      return response()->json(['success' => true]);
@@ -140,10 +142,24 @@ class PromotionController extends Controller
             }
         }
 
+        $productsNew = $request->input('productsNew');
+        if (is_array($productsNew) ){
+            foreach($productsNew as $productId)
+            {
+                $product = Product::findOrFail($productId['id']);
+                $d = new PromotionDetail();
+                $d->amount = $productId['amount'];
+                $d->product()->associate($product);
+                $d->promotion()->associate($promotion);
+                $d->save();
+
+            }
+        }
+
         $promotion->save();
     }
 
-        /**
+    /**
      * Delete the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -23,6 +23,5 @@ Route::group(['middleware' => 'auth'], function() {
   Route::GET('promotion/edit/{id}','PromotionController@edit');
   Route::GET('promotion/delete','PromotionController@delete');
   Route::GET('stock','StockController@index');
+  Route::GET('sale/create','SaleController@create');
 });
-
-

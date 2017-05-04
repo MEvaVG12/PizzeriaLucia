@@ -94,6 +94,30 @@ class StockController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updates(Request $request)
+    {
+
+       $stockUpdate = $request->input('stockUpdate');
+
+        if (is_array($stockUpdate) ){
+            foreach($stockUpdate as $stock)
+            {
+                $currentStock = Stock::findOrFail($stock['id']);
+                $currentStock->amount = $stock['amount'];
+                $currentStock->save();
+
+            }
+        }
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

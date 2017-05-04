@@ -22,6 +22,7 @@ Route::post('/promotion/create', 'PromotionController@store');
 //Route::POST('/promotion/create', function() { });
 
 Route::put('stock/update/{id}','StockController@update');
+Route::put('stock/updates','StockController@updates');
 Route::get('stocks', function(){
   return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
             ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);

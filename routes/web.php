@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::GET('/', 'HomeController@index');
   Route::GET('/home', 'HomeController@index');
   Route::GET('product','ProductController@index');
+  Route::GET('product/show/{id}','ProductController@show');
   Route::GET('promotion/create','PromotionController@create');
   Route::GET('promotion/index','PromotionController@index');
   Route::GET('promotion/show/{id}','PromotionController@show');

@@ -69,7 +69,7 @@
         {"className":      'details-control',
           "orderable":      false,
           "data":           null,
-          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Cosultar'><button id='ShowBtn' class='btn btn-info btn-xs' data-title='Show' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-search'></span></button></p>"
+          "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Cosultar'><button id='ShowBtn' class='btn btn-info btn-xs' data-title='Show' data-toggle='modal' data-target='#show'><span class='glyphicon glyphicon-search'></span></button></p>"
         }
     ],
   });

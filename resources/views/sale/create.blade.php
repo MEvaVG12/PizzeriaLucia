@@ -3,7 +3,6 @@
 @section('links')
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-<link href="{{ URL::asset('css/dataTables.checkboxes.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
 @stop
 
@@ -50,17 +49,22 @@
         <input required  class='form-control' type='time' name='time' id='time' autocomplete="on" >
       </div>
       <div class='form-group'>
-          <label for="title" class='control-label'>Detalle Pedido: </label>
-           <table class='table table-bordered' id='saleDetailTable'>
-              <thead>
-                <th scope="col">Producto</th>
-                <th scope="col">IDProductos</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Precio Unitario</th>
-                <th scope="col">Subtotal</th>
-                <th scope="row">Total<th>
-             </thead>
-           </table>
+        <label for="title" class='control-label'>Detalle Pedido: </label>
+         <table class='table table-bordered' id='saleDetailTable'>
+            <thead>
+              <th scope="col" class="text-center">Producto</th>
+              <th scope="col" class="text-center">IDProductos</th>
+              <th scope="col" class="text-center">Cantidad</th>
+              <th scope="col" class="text-center">Precio Unitario</th>
+              <th scope="col" class="text-center">Subtotal</th>
+              <th class="text-center">Tipo</th>
+              <th class="text-center">Borrar</th>
+           </thead>
+         </table>
+      </div>
+      <div class='form-group'>
+        <label for="title" class='control-label'>Total: </label>
+        <input required  readonly="readonly" class='form-control' type='text' name='total' id='total' value="0">
       </div>
     </div>
   </form>
@@ -87,13 +91,15 @@
                 <div class="modal-body">
                     <div class='form-group'>
                       <p>Cantidad</p>
-                      <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount' >
+                      <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amountProduct' id='amountProduct' >
                     </div>
                     <div class='form-group'>
                       <p> Producto: </p>
                       <table class='table table-bordered' id='productTable'>
                         <thead>
-                          <th>Producto</th>
+                          <th class="text-center">Producto</th>
+                          <th class="text-center">Id</th>
+                          <th class="text-center">Precio</th>
                         </thead>
                       </table>
                     </div>
@@ -105,6 +111,48 @@
             </div>
         </div>
     </div>
+
+      <!-- Button trigger modal -->
+    <a href="#modelPromotion" role="button" class="btn btn-large btn-primary" data-toggle="modal">Agregar promoción</a>
+
+    <!-- Modal -->
+    <div id="modelPromotion" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Agregar promoción</h4>
+                </div>
+                <div id="errorModal" class="alert alert-danger hidden">
+                    <strong>Error!</strong> Existen algunos problemas en las entradas.<b<br>
+                    <ul id="listErrorModal">
+
+                    </ul>
+                </div>
+                <div class="modal-body">
+                    <div class='form-group'>
+                      <p>Cantidad</p>
+                      <input required  class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amountPromotion' id='amountPromotion' >
+                    </div>
+                    <div class='form-group'>
+                      <p> Promoción: </p>
+                      <table class='table table-bordered' id='promotionTable'>
+                        <thead>
+                          <th class="text-center">Promoción</th>
+                          <th class="text-center">Id</th>
+                          <th class="text-center">Precio</th>
+                        </thead>
+                      </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" name='addPromotion' id='addPromotion' class="btn btn-primary">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-right">
@@ -118,7 +166,6 @@
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="{{ URL::asset('js/dataTables.checkboxes.min.js') }}"></script>
 <script >
 
   //mostrar fecha actual
@@ -156,6 +203,26 @@
     "select": true,
     "dom": 'Bfrtip',
   });
+
+   var promotionTable = $('#promotionTable').DataTable({
+    "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+    },
+    "processing": true,
+    //"serverSide": true,
+    "ajax": "http://localhost:8080/pizzeria/public/api/promotion/index",
+    "deferRender": true,
+    "bAutoWidth" : false,
+    "columns":[
+        {sWidth : "80%", data:'name', name: 'promotion.name'},
+        {visible: false, data:'id', name: 'promotion.id'},
+        {sWidth : "20%", data:'price', name: 'promotion.price'},
+    ],
+    "rowId": 'name',
+    "select": true,
+    "dom": 'Bfrtip',
+  });
+
   var promotionDetailTable = $('#saleDetailTable').DataTable({
     "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
@@ -167,8 +234,13 @@
       "searchable": false
     },
     { "sWidth" : "8%",
-      "targets": [ 3 ],
-      "defaultContent": "<button class='delete-modal btn btn-danger'>Delete</button>",
+      "targets": [ 6 ],
+      "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+      "searchable": false
+    },
+    {
+      "targets": [ 5 ],
+      "visible": false,
       "searchable": false
     }],
     "deferRender": true,
@@ -178,7 +250,7 @@
   });
   var counter = 1; //contiene la cantidad de filas de la tabla
   //Borra la fila en la table
-  $('#promotionDetailTable tbody').on( 'click', 'button', function () {
+  $('#saleDetailTable tbody').on( 'click', 'button', function () {
      promotionDetailTable.row( $(this).parents('tr') ).remove().draw();
       counter--;
   } );
@@ -195,7 +267,7 @@
       var errors = [];
       var rowData = productTable.rows('.selected').data()[0];
       //Valida que todos los datos están ingresados
-      if ($("#amount").val() === '') {
+      if ($("#amountProduct").val() === '') {
         errors.push('El campo cantidad es requerido')
       } if ( $('#productTable tbody tr.selected').length < 1) {
         errors.push('Seleccione un producto en la tabla')
@@ -210,19 +282,67 @@
       } else {
           $("#errorModal").addClass('hidden');
           //Agrega en la tabla de detalle de promoción los datos seleccionados
+          var subtotal = rowData['price'] * $("#amountProduct").val();
           promotionDetailTable.row.add( [
               rowData['name'],
               rowData['id'],
-              $("#amount").val(),
+              $("#amountProduct").val(),
               rowData['price'],
-              rowData['price'] * $("#amount").val(),
+              subtotal, 'product'
           ] ).draw( false );
 
           counter++;
           //limpia modelo
-          $("#amount").val('');
+          $("#amountProduct").val('');
           productTable.rows('tr.selected').deselect();
           $('#myModal').modal('toggle');
+          $("#total").val( subtotal + parseFloat($("#total").val()) );
+      }
+  } );
+
+          //Borra la fila en la table
+        $('#promotionDetailTable tbody').on( 'click', 'button', function () {
+          if ( confirm( "¿Esta seguro que desea eliminar?" ) ) {
+            promotionDetailTable.push(product);
+            tableP.row( $(this).parents('tr') ).remove().draw();
+          }
+        } );
+
+  $('#addPromotion').on( 'click', function () {
+    console.log('aa');
+      var errors = [];
+      var rowData = promotionTable.rows('.selected').data()[0];
+      //Valida que todos los datos están ingresados
+      if ($("#amountPromotion").val() === '') {
+        errors.push('El campo cantidad es requerido')
+      } if ( $('#promotionTable tbody tr.selected').length < 1) {
+        errors.push('Seleccione una promoción en la tabla')
+      }
+      console.log(errors);
+      if (errors.length>0) {
+          $('#listErrorModal').empty();
+          $("#errorModal").removeClass('hidden');
+          for (var i in errors) {
+            $("#errorModal ul").append('<li><span>'+ errors[i] + '</span></li>');
+          }
+      } else {
+          $("#errorModal").addClass('hidden');
+          //Agrega en la tabla de detalle de promoción los datos seleccionados
+          var subtotal = rowData['price'] * $("#amountPromotion").val();
+          promotionDetailTable.row.add( [
+              rowData['name'],
+              rowData['id'],
+              $("#amountPromotion").val(),
+              rowData['price'],
+              subtotal , 'promotion'
+          ] ).draw( false );
+
+          counter++;
+          //limpia modelo
+          $("#amountPromotion").val('');
+          promotionTable.rows('tr.selected').deselect();
+          $('#modelPromotion').modal('toggle');
+          $("#total").val( subtotal + parseFloat($("#total").val()) );
       }
   } );
 
@@ -240,9 +360,9 @@
    function save()
     {
       var errors = [];
-      var table = $('#promotionDetailTable').DataTable();
-      var productsId = [];
-      var amounts = [];
+      var table = $('#saleDetailTable').DataTable();
+      var products = [];
+      var promotions = [];
       var token = $(" [name=_token]").val();
       //Valida que todos los datos están ingresados
       if ($("#name").val() === '') {
@@ -266,16 +386,22 @@
         $("#success").addClass('hidden')
         table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
           var data = this.data();
-          productsId.push(data[1]);
-          amounts.push(parseInt(data[2]));
+          //console.log($("#date").val());
+          if(data[5]=='product'){
+            var product = {amount:data[2], id:data[1], price:data[3]};
+            products.push(product);
+          } else if (data[5]=='promotion'){
+            var promotion = {amount:data[3], id:data[1], price:data[3]};
+            promotions.push(promotion);
+          }
          } );
+        console.log($("#date").val());
         $.ajax({
-          url: "http://localhost:8080/pizzeria/public/api/promotion/create",
+          url: "http://localhost:8080/pizzeria/public/api/sale/create",
           type: 'POST',
-          data: {"amounts": amounts, "productsId": productsId, "name": $("#name").val(), "price": $("#price").val(),'_token': token},
+          data: {"client": $("#name").val(), "orderDate": $("#date").val(), "products": products, "promotions": promotions,'_token': token},
             success: function (data) {
               $("#success").removeClass('hidden')
-              //$('#promotionTable').DataTable().ajax.reload();
             },
             error : function(xhr, status) {
                $("#errorDB").removeClass('hidden')
@@ -284,6 +410,7 @@
         //limpia pantalla
         $("#name").val('');
         $("#price").val('');
+        $("#total").val('0');
         table.clear().draw();
       }
     }

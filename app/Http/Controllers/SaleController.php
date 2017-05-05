@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Sale;
-use App\PromotionDetail;
+use App\SaleDetail;
 use App\Product;
+use App\Promotion;
 use Notification;
 
 class SaleController extends Controller
@@ -51,31 +52,45 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:promotions',
-            'price' => 'required',
-            'productsId' => 'required',
-            'amounts' => 'required',
+            'client' => 'required',
+            'orderDate' => 'required',
+            //'deliveryDate' => 'required',
         ]);
 
-        $p = new Promotion();
-        $p->name = $request->input('name');
-        $p->price = $request->input('price');
+        //creación de fecha
+        $time = strtotime($request->input('orderDate'));
+        $newformat = date('Y-m-d',$time);
+
+        $p = new Sale();
+        $p->client = $request->input('client');
+        $p->orderDate = $newformat;
+        $p->phoneNumer = 'ver';
+        $p->deliveryDate = $newformat;
         $p->save();
 
-        $productsId = $request->input('productsId');
-        $amounts = $request->input('amounts');
 
-        $i= 0;
-        foreach($productsId as $productId)
+        $products = $request->input('products');
+
+        foreach($products as $product)
         {
-            $product = Product::findOrFail($productId);
-            $d = new PromotionDetail();
-            $d->amount = $amounts[$i];
-            $d->product()->associate($product);
-            $d->promotion()->associate($p);
+            $currentProduct = Product::findOrFail($product['id']);
+            $d = new SaleDetail();
+            $d->amount = $product['amount'];
+            $d->product()->associate($currentProduct);
+            $d->sale()->associate($p);
             $d->save();
-            $i++;
         }
+
+        /*$promotions = $request->input('promotions');
+
+        foreach($promotions as $promotion)
+        {
+            $currentPromotion = Promotion::findOrFail($promotion['id']);
+            $d = new SaleDetail();
+            $d->amount = $promotion['amount'];
+            $d->promotion()->associate($currentPromotion);
+            $d->save();
+        }*/
 
      return response()->json(['success' => true]);
 

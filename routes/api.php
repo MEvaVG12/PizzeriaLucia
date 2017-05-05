@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::post('/sale/create', 'SaleController@store');
 Route::post('/promotion/create', 'PromotionController@store');
 //Route::POST('/promotion/create', function() { });
 

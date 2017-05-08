@@ -1,9 +1,17 @@
 <section id='sidebar'>
   <i class='icon-align-justify icon-large' id='toggle'></i>
   <ul id='dock'>
-    <li class='active launcher'>
+    <li class='active launcher dropdown hover'>
       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-      <a href="dashboard.html">Ventas</a>
+      <a href="{{ url('sale/create') }}">Ventas</a>
+       <ul class='dropdown-menu'>
+        <li>
+          <a href="{{ url('sale/create') }}">Nueva</a>
+        </li>
+        <li>
+          <a href="{{ url('sale/index') }}">Ver</a>
+        </li>
+      </ul>
     </li>
     <li class='launcher dropdown hover'>
       <i class="fa fa-gift" aria-hidden="true"></i>

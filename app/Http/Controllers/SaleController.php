@@ -19,8 +19,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $promotions = Promotion::all()->take(10);
-        return View('promotion.index')->with('promotions',$promotions);
+        return View('sale.index');
     }
 
     /**
@@ -177,15 +176,19 @@ class SaleController extends Controller
     }
 
     /**
-     * Display products list.
+     * Display sales list.
      *
      * @return \Illuminate\Http\Response
      */
-    public function showPromotions()
+    public function showSales()
     {
-        $promotions = DB::table('promotions') ->select('promotions.id', 'promotions.name', 'promotions.price')->where('isDeleted', '=', '0')->get();
+/**        $promotions = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDate', 'sales.deliveryDate')->where('isDeleted', '=', '0')->get();/
+        /*
+        */
 
-        return response()->json(['success' => true, 'data' => $promotions]);
+        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDate', 'sales.deliveryDate')->get();
+
+        return response()->json(['success' => true, 'data' => $sales]);
     }
 
         /**

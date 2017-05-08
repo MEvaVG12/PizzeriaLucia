@@ -73,27 +73,35 @@ class SaleController extends Controller
 
 
         $products = $request->input('products');
-
+        if (is_array($products) )
+        {
         foreach($products as $product)
         {
             $currentProduct = Product::findOrFail($product['id']);
             $d = new SaleDetail();
+            $d->price = $product['price'];
             $d->amount = $product['amount'];
             $d->product()->associate($currentProduct);
             $d->sale()->associate($p);
             $d->save();
         }
+    }
 
-        /*$promotions = $request->input('promotions');
+        $promotions = $request->input('promotions');
 
+        if (is_array($promotions) )
+        {
         foreach($promotions as $promotion)
         {
             $currentPromotion = Promotion::findOrFail($promotion['id']);
             $d = new SaleDetail();
+            $d->price = $promotion['price'];
             $d->amount = $promotion['amount'];
             $d->promotion()->associate($currentPromotion);
+            $d->sale()->associate($p);
             $d->save();
-        }*/
+        }
+    }
 
      return response()->json(['success' => true]);
 
@@ -141,12 +149,15 @@ class SaleController extends Controller
 
         $productsUpdate = $request->input('productsUpdate');
 
+        if (is_array($productsUpdate) )
+        {
         foreach($productsUpdate as $productId)
         {
             $promotionDetail = PromotionDetail::findOrFail($productId['id']);
             $promotionDetail->amount = $productId['newValue'];
             $promotionDetail->save();
         }
+    }
 
         $promotion->save();
     }

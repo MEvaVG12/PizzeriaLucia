@@ -199,16 +199,16 @@
 
 <script>
     $(document).ready(function(){
-        var currentDate = new Date();  
+        var currentDate = new Date(); 
         var date_input=$('input[name="deliveryDate"]'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
         date_input.datepicker({
-            format: 'mm/dd/yyyy',
             container: container,
             todayHighlight: true,
             autoclose: true,
+            dateFormat: 'dd/mm/yy',
         })
-                $("#deliveryDate").datepicker("setDate",currentDate);
+        $("#deliveryDate").datepicker("setDate",currentDate);
     })
 </script>
 
@@ -442,13 +442,13 @@
             var product = {amount:data[2], id:data[1], price:data[3]};
             products.push(product);
           } else if (data[5]=='promotion'){
-            var promotion = {amount:data[3], id:data[1], price:data[3]};
+            var promotion = {amount:data[2], id:data[1], price:data[3]};
             promotions.push(promotion);
           }
          } );
       //  console.log($("#date").val() + ":" + $("#time").val()+':00');
         orderDateTime=$("#date").val() + ":" + $("#time").val()+':00';
-        console.log(orderDateTime);
+        console.log(promotions);
         $.ajax({
           url: "http://localhost:8080/pizzeria/public/api/sale/create",
           type: 'POST',

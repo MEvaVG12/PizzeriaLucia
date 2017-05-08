@@ -1,9 +1,24 @@
 @extends('layouts.master')
 
 @section('links')
+<!--formden.js communicates with FormDen server to validate fields and submit via AJAX -->
+<script type="text/javascript" src="https://formden.com/static/cdn/formden.js"></script>
+
+<!-- Special version of Bootstrap that is isolated to content wrapped in .bootstrap-iso -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!--Font Awesome (added because you use icons in your prepend/append)-->
+<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<!-- Inline CSS based on choices in "Settings" tab -->
+<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+
+
+
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 <link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
+
 @stop
 
 @section('content')
@@ -33,6 +48,10 @@
 
     <div class="panel-body">
       <div class='form-group'>
+        <label for="title" class='control-label'>Cliente: </label>
+        <input required class='form-control' placeholder='Ingrese nombre del cliente' type='text' name='name' id='name' >
+      </div>
+      <div class='form-group'>
         <label for="title" class='control-label'>Fecha de pedido: </label>
         <input required  readonly="readonly" class='form-control' type='text' name='date' id='date'>
       </div>
@@ -41,13 +60,20 @@
         <input required  readonly="readonly" class='form-control' type='time' name='timeP' id='timeP'>
       </div>
       <div class='form-group'>
-        <label for="title" class='control-label'>Cliente: </label>
-        <input required class='form-control' placeholder='Ingrese nombre del cliente' type='text' name='name' id='name' >
-      </div>
+        <label for="title" class='control-label'>Fecha de entrega: </label>
+           <div class="input-group">
+            <div class="input-group-addon">
+             <i class="fa fa-calendar">
+             </i>
+            </div>
+            <input class="form-control" id="deliveryDate" name="deliveryDate" placeholder="MM/DD/YYYY" type="text"/>
+           </div>
+         </div>
       <div class='form-group'>
-        <label for="title" class='control-label'>Para Hora: </label>
+        <label for="title" class='control-label'>Hora de entrega: </label>
         <input required  class='form-control' type='time' name='time' id='time' autocomplete="on" >
       </div>
+
       <div class='form-group'>
         <label for="title" class='control-label'>Detalle Pedido: </label>
          <table class='table table-bordered' id='saleDetailTable'>
@@ -162,6 +188,31 @@
 @stop
 
 @section('javascript')
+
+<!-- Extra JavaScript/CSS added manually in "Settings" tab -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+    $(document).ready(function(){
+        var currentDate = new Date();  
+        var date_input=$('input[name="deliveryDate"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        })
+                $("#deliveryDate").datepicker("setDate",currentDate);
+    })
+</script>
+
+
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -395,11 +446,13 @@
             promotions.push(promotion);
           }
          } );
-        console.log($("#date").val());
+      //  console.log($("#date").val() + ":" + $("#time").val()+':00');
+        orderDateTime=$("#date").val() + ":" + $("#time").val()+':00';
+        console.log(orderDateTime);
         $.ajax({
           url: "http://localhost:8080/pizzeria/public/api/sale/create",
           type: 'POST',
-          data: {"client": $("#name").val(), "orderDate": $("#date").val(), "products": products, "promotions": promotions,'_token': token},
+          data: {"client": $("#name").val(), "orderDate": $("#date").val(), "orderTime": $("#timeP").val(), "deliveryDate": $("#deliveryDate").val(), "deliveryTime": $("#time").val(), "products": products, "promotions": promotions,'_token': token},
             success: function (data) {
               $("#success").removeClass('hidden')
             },

@@ -8,6 +8,7 @@ use App\Sale;
 use App\SaleDetail;
 use App\Product;
 use App\Promotion;
+use DateTime;
 use Notification;
 
 class SaleController extends Controller
@@ -56,15 +57,18 @@ class SaleController extends Controller
             //'deliveryDate' => 'required',
         ]);
 
-        //creación de fecha
-        $time = strtotime($request->input('orderDate'));
-        $newformat = date('Y-m-d',$time);
+
+        $order = new DateTime($request->input('orderDate'));
+        $order->setTime(substr($request->input('orderTime'), 0, 2), substr($request->input('orderTime'), -2));
+
+        $delivery = new DateTime($request->input('deliveryDate'));
+        $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('orderTime'), -2));
 
         $p = new Sale();
         $p->client = $request->input('client');
-        $p->orderDate = $newformat;
-        $p->phoneNumer = 'ver';
-        $p->deliveryDate = $newformat;
+        $p->phoneNumer = '';
+        $p->orderDateTime = $order;
+        $p->deliveryDateTime = $delivery;
         $p->save();
 
 
@@ -201,6 +205,17 @@ class SaleController extends Controller
         $promotionDetail = DB::table('promotion_details')->join('products', 'products.id', '=', 'promotion_details.product_id') ->select('promotion_details.id', 'promotion_details.amount as cantidad', 'products.name as productName')->where('promotion_details.promotion_id', '=', '11')->get();
 
         return response()->json(['success' => true, 'data' => $promotionDetail]);
+    }
+
+    /**
+     * Display ingredients list of specified product (by id).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showSaleDetails(Request $request)
+    {
+
     }
 
 }

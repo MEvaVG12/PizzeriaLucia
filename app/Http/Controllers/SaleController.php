@@ -115,8 +115,8 @@ class SaleController extends Controller
      */
     public function show($id)
     {
-        $promotion = Promotion::findOrFail($id);
-        return View('promotion.show' , ['promotion' => $promotion]);
+        $sale = Sale::findOrFail($id);
+        return View('sale.show' , ['sale' => $sale]);
     }
 
     /**
@@ -201,7 +201,7 @@ class SaleController extends Controller
         /*
         */
 
-        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDate', 'sales.deliveryDate')->get();
+        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDateTime', 'sales.deliveryDateTime')->get();
 
         return response()->json(['success' => true, 'data' => $sales]);
     }
@@ -226,6 +226,9 @@ class SaleController extends Controller
      */
     public function showSaleDetails(Request $request)
     {
+        $sale_details = DB::table('sale_details')->leftJoin('products', 'products.id', '=', 'sale_details.product_id')->leftJoin('product_types', 'products.product_type_id', '=', 'product_types.id')->leftJoin('promotions', 'promotions.id', '=', 'sale_details.promotion_id')->select('sale_details.id', 'sale_details.amount', 'sale_details.price', 'products.name as productName', 'promotions.name as promotionName', 'product_types.name as typeProduct')->where('sale_details.sale_id', '=', $request->input('id'))->get();
+
+        return response()->json(['success' => true, 'data' => $sale_details]);
 
     }
 

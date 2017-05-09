@@ -43,8 +43,8 @@
     "bAutoWidth" : false,
     "columns":[
         {sWidth : "40%", data:'client', name: 'sale.client'},
-        {sWidth : "30%", data:'orderDate', name: 'sale.orderDate'},
-        {sWidth : "30%", data:'orderDate', name: 'sale.deliveryDate'},
+        {sWidth : "30%", data:'orderDateTime', name: 'sale.orderDateTime'},
+        {sWidth : "30%", data:'deliveryDateTime', name: 'sale.deliveryDateTime'},
         {"className":      'details-control',
           "orderable":      false,
           "data":           null,

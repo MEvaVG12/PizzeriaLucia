@@ -50,6 +50,17 @@ class ProductController extends Controller
         return View('product.show' , ['product' => $product]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function get($id)
+    {
+        $product = Product::findOrFail($id);
+        return response()->json([$product]);
+    }
 
 
     public function destroy(Request $request)

@@ -38,10 +38,10 @@
                           {{ csrf_field() }}
                           <table class='table table-bordered' id='productTable'>
                            <thead>
-                            <th scope="col" class="text-center">Producto</th>
-                            <th scope="col" class="text-center">Cantidad</th>
-                            <th scope="col" class="text-center">Precio Unitario</th>
-                            <th scope="col" class="text-center">Subtotal</th>
+                            <th class="text-center">Producto</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-center">Precio Unitario</th>
+                            <th class="text-center">Subtotal</th>
                          </thead>
                           </table>
                         </form>

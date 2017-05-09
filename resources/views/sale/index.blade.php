@@ -87,7 +87,7 @@
     console.log(this);
 
     $.ajax({
-      url: "http://localhost:8080/pizzeria/public/api/promotion/delete/" + id + '',
+      url: "http://localhost:8080/pizzeria/public/api/sale/delete/" + id + '',
       type: 'PUT',
       data: {'_token': token},
         success: function (data) {

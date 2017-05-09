@@ -30,10 +30,11 @@ Route::get('stocks', function(){
 
 Route::get('products','ProductController@showProducts');
 Route::post('promotion/{id}/products','PromotionController@showProducts');
-
+Route::put('sale/update/{id}','SaleController@update');
 //Route::get('stocks','StockController@showStock');
 Route::post('ingredients','ProductController@showIngredients');
 Route::get('sale/index','SaleController@showSales');
+Route::put('sale/delete/{id}','SaleController@destroy');
 Route::post('sale/index/saleDetails','SaleController@showSaleDetails');
 Route::get('promotion/index','PromotionController@showPromotions');
 Route::post('promotion/index/promotionDetails','PromotionController@showPromotionDetails');

@@ -62,7 +62,7 @@ class SaleController extends Controller
         $order->setTime(substr($request->input('orderTime'), 0, 2), substr($request->input('orderTime'), -2));
 
         $delivery = new DateTime($request->input('deliveryDate'));
-        $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('orderTime'), -2));
+        $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('deliveryTime'), -2));
 
         $p = new Sale();
         $p->client = $request->input('client');
@@ -127,8 +127,8 @@ class SaleController extends Controller
      */
     public function edit($id)
     {
-        $promotion = Promotion::findOrFail($id);
-        return View('promotion.edit' , ['promotion' => $promotion]);
+        $sale = Sale::findOrFail($id);
+        return View('sale.edit' , ['sale' => $sale]);
     }
 
     /**
@@ -140,26 +140,91 @@ class SaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*$this->validate($request, [
-            'price' => 'required| numeric',
+       /* $this->validate($request, [
+            'price' => 'required'
         ]);*/
+        $formato = 'd/m/Y';
+        $delivery =DateTime::createFromFormat($formato, $request->input('deliveryDate'));
+      //  $delivery = DateTime::createFromFormat('j-M-Y', '15-02-2009');
+       // $delivery = new DateTime($request->input('deliveryDate'));
+        $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('deliveryTime'), -2));
 
-        $promotion = Promotion::findOrFail($id);
-        $promotion->price = $request->input('price');
+        $sale = Sale::findOrFail($id);
+        $sale->deliveryDateTime = $delivery;
+        //$sale->price = $request->input('price');
 
         $productsUpdate = $request->input('productsUpdate');
-
-        if (is_array($productsUpdate) )
-        {
-        foreach($productsUpdate as $productId)
-        {
-            $promotionDetail = PromotionDetail::findOrFail($productId['id']);
-            $promotionDetail->amount = $productId['newValue'];
-            $promotionDetail->save();
+        if (is_array($productsUpdate) ){
+            foreach($productsUpdate as $productId)
+            {
+                $promotionDetail = SaleDetail::findOrFail($productId['id']);
+                $promotionDetail->amount = $productId['newValue'];
+                $promotionDetail->save();
+            }
         }
-    }
 
-        $promotion->save();
+        //TODO ver de poner todo en uno
+        $promotionsUpdate = $request->input('promotionsUpdate');
+        if (is_array($promotionsUpdate) ){
+            foreach($promotionsUpdate as $promotionId)
+            {
+                $promotionDetail = SaleDetail::findOrFail($promotionId['id']);
+                $promotionDetail->amount = $promotionId['newValue'];
+                $promotionDetail->save();
+            }
+        }
+
+        $productsDelete = $request->input('productsDelete');
+        if (is_array($productsDelete) ){
+            foreach($productsDelete as $productId)
+            {
+                $promotionDetail = SaleDetail::findOrFail($productId['id']);
+                $promotionDetail->isDeleted = true;
+                $promotionDetail->save();
+            }
+        }
+
+        $promotionsDelete = $request->input('promotionsDelete');
+        if (is_array($promotionsDelete) ){
+            foreach($promotionsDelete as $promotionId)
+            {
+                $promotionDetail = SaleDetail::findOrFail($promotionId['id']);
+                $promotionDetail->isDeleted = true;
+                $promotionDetail->save();
+            }
+        }
+
+        $productsNew = $request->input('productsNew');
+        if (is_array($productsNew) ){
+            foreach($productsNew as $productId)
+            {
+                $product = Product::findOrFail($productId['id']);
+                $d = new SaleDetail();
+                $d->amount = $productId['amount'];
+                $d->price = $productId['price'];
+                $d->product()->associate($product);
+                $d->sale()->associate($sale);
+                $d->save();
+
+            }
+        }
+
+        $promotionsNew = $request->input('promotionsNew');
+        if (is_array($promotionsNew) ){
+            foreach($promotionsNew as $promotionId)
+            {
+                $promotion = Promotion::findOrFail($promotionId['id']);
+                $d = new SaleDetail();
+                $d->amount = $promotionId['amount'];
+                $d->price = $promotionId['price'];
+                $d->promotion()->associate($promotion);
+                $d->sale()->associate($sale);
+                $d->save();
+
+            }
+        }
+
+        $sale->save();
     }
 
         /**
@@ -171,7 +236,7 @@ class SaleController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $product = Promotion::findOrFail($id);
+        $product = Sale::findOrFail($id);
         $product->isDeleted = true;
         $product->save();
     }
@@ -201,7 +266,7 @@ class SaleController extends Controller
         /*
         */
 
-        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDateTime', 'sales.deliveryDateTime')->get();
+        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDateTime', 'sales.deliveryDateTime')->where('sales.isDeleted', '=', 0)->get();
 
         return response()->json(['success' => true, 'data' => $sales]);
     }
@@ -226,7 +291,7 @@ class SaleController extends Controller
      */
     public function showSaleDetails(Request $request)
     {
-        $sale_details = DB::table('sale_details')->leftJoin('products', 'products.id', '=', 'sale_details.product_id')->leftJoin('product_types', 'products.product_type_id', '=', 'product_types.id')->leftJoin('promotions', 'promotions.id', '=', 'sale_details.promotion_id')->select('sale_details.id', 'sale_details.amount', 'sale_details.price', 'products.name as productName', 'promotions.name as promotionName', 'product_types.name as typeProduct')->where('sale_details.sale_id', '=', $request->input('id'))->get();
+        $sale_details = DB::table('sale_details')->leftJoin('products', 'products.id', '=', 'sale_details.product_id')->leftJoin('product_types', 'products.product_type_id', '=', 'product_types.id')->leftJoin('promotions', 'promotions.id', '=', 'sale_details.promotion_id')->select('sale_details.id', 'sale_details.amount', 'sale_details.price', 'products.name as productName', 'promotions.name as promotionName', 'product_types.name as typeProduct')->where('sale_details.sale_id', '=', $request->input('id'))->where('sale_details.isDeleted', '=', 0)->get();
 
         return response()->json(['success' => true, 'data' => $sale_details]);
 

@@ -1,10 +1,14 @@
-var promotionsUpdate = [];
-var promotionsDelete = [];
-var promotionsNew = [];
-var promotionsExists = [];
+var id = sale.id;
 
-//Recoge los datos para ser eliminados en la bd
-function deletePromotion(id) {
+var productsUpdate = [];
+var promotionsUpdate = [];
+var productsDelete = [];
+var promotionsDelete = [];
+var productsNew = [];
+var promotionsNew = [];
+var productsExists = [] ;
+
+function deleteSale(id) {
 
     var token = $(" [name=_token]").val();
 
@@ -13,14 +17,14 @@ function deletePromotion(id) {
     $("#success").addClass('hidden')
 
     $.ajax({
-        url: promotionDeleteRoute + '/' + id + '',
+        url: saleDeleteRoute + "/" + id,
         type: 'PUT',
         data: {
             '_token': token
         },
         success: function(data) {
             $("#success").removeClass('hidden');
-            $('#promotionTable').DataTable().ajax.reload();
+            $('#saleTable').DataTable().ajax.reload();
         },
         error: function(xhr, status) {
             $("#errorDB").removeClass('hidden')
@@ -31,23 +35,15 @@ function deletePromotion(id) {
 //Recoge los datos para ser actualizados en la bd
 function update() {
     var errors = [];
-
+    var table = $('#saleDetailsTable').DataTable();
+    var productsId = [];
+    var amounts = [];
     var token = $(" [name=_token]").val();
-
     //Valida que todos los datos están ingresados
-    for (var key in promotionsUpdate) {
-        if (promotionsUpdate[key]['newValue'] < 1 && errors.length < 1) {
-            errors.push('La cantidad de producto debe ser positivo')
-        }
-    }
-    for (var key in promotionsNew) {
-        if (promotionsNew[key]['newValue'] < 1 && errors.length < 1) {
-            errors.push('La cantidad de producto debe ser positivo')
-        }
-    }
     if ($("#price").val() === '') {
         errors.push('El campo precio es requerido')
     }
+
     if (errors.length > 0) {
         $("#success").addClass('hidden');
         $("#errorDB").addClass('hidden');
@@ -59,17 +55,23 @@ function update() {
     } else {
         $("#errorMain").addClass('hidden');
         $("#errorDB").addClass('hidden');
-        $("#success").addClass('hidden');
-        console.log(promotionsDelete);
+        $("#success").addClass('hidden')
+
+        console.log($("#deliveryDate").val());
         $.ajax({
-            url: promotionUpdateRoute + '/' + id + '',
+            url: "http://localhost:8080/pizzeria/public/api/sale/update" + '/' + id + '',
             type: 'PUT',
             data: {
                 "price": $("#price").val(),
                 '_token': token,
+                'productsUpdate': productsUpdate,
+                'productsDelete': productsDelete,
+                'productsNew': productsNew,
                 'promotionsUpdate': promotionsUpdate,
                 'promotionsDelete': promotionsDelete,
-                'promotionsNew': promotionsNew
+                'promotionsNew': promotionsNew,
+                "deliveryTime": $("#time").val(),
+                "deliveryDate": $("#deliveryDate").val()
             },
             success: function(data) {
                 $("#success").removeClass('hidden')
@@ -81,38 +83,18 @@ function update() {
     }
 }
 
-//Recoge los datos para ser creados en la bd
+//Recoge los datos para ser guardados en la bd
 function save() {
     var errors = [];
-    var promotionDetailTable = $('#promotionDetailTable').DataTable();
-    var productsId = [];
-    var amounts = [];
+    var saleDetailTable = $('#saleDetailTable').DataTable();
+    var products = [];
+    var promotions = [];
     var token = $(" [name=_token]").val();
-
-    promotionDetailTable.rows().every(function(rowIdx, tableLoop, rowLoop) {
-        var data = this.data();
-        if (parseInt(data[2]) < 1 && errors.length < 1) {
-            //primera validación que se hace
-            errors.push('El campo cantidad debe ser positivo')
-        } else {
-            productsId.push(data[1]);
-            amounts.push(parseInt(data[2]));
-        }
-
-    });
-
     //Valida que todos los datos están ingresados
     if ($("#name").val() === '') {
         errors.push('El campo nombre es requerido')
     }
-    if ($("#price").val() === '') {
-        errors.push('El campo precio es requerido')
-    }
-    if (!(parseFloat($("#price").val()) > 0)) {
-        errors.push('El campo precio debe ser positivo')
-    }
-
-    if (promotionDetailTable.rows().data().length < 1) {
+    if (saleDetailTable.rows().data().length < 1) {
         errors.push('Ingrese al menos un producto en la tabla')
     }
     if (errors.length > 0) {
@@ -128,14 +110,37 @@ function save() {
         $("#errorDB").addClass('hidden');
         $("#success").addClass('hidden')
 
+        saleDetailTable.rows().every(function(rowIdx, tableLoop, rowLoop) {
+            var data = this.data();
+
+            if (data[5] == 'product') {
+                var product = {
+                    amount: data[2],
+                    id: data[1],
+                    price: data[3]
+                };
+                products.push(product);
+            } else if (data[5] == 'promotion') {
+                var promotion = {
+                    amount: data[2],
+                    id: data[1],
+                    price: data[3]
+                };
+                promotions.push(promotion);
+            }
+        });
+
         $.ajax({
-            url: promotionCreateRoute,
+            url: saleCreateRoute,
             type: 'POST',
             data: {
-                "amounts": amounts,
-                "productsId": productsId,
-                "name": $("#name").val(),
-                "price": $("#price").val(),
+                "client": $("#name").val(),
+                "orderDate": $("#date").val(),
+                "orderTime": $("#timeP").val(),
+                "deliveryDate": $("#deliveryDate").val(),
+                "deliveryTime": $("#time").val(),
+                "products": products,
+                "promotions": promotions,
                 '_token': token
             },
             success: function(data) {
@@ -147,7 +152,7 @@ function save() {
         });
         //limpia pantalla
         $("#name").val('');
-        $("#price").val('');
-        promotionDetailTable.clear().draw();
+        $("#total").val('0');
+        saleDetailTable.clear().draw();
     }
 }

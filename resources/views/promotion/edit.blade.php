@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="page-header">
-    <h1>Mostrar Promoción</h1>
+    <h1>Editar Promoción</h1>
 </div>
 
 <div id="errorDB" class="alert alert-danger hidden alert-dismissable">

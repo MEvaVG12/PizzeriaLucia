@@ -54,7 +54,7 @@ class SaleController extends Controller
         $this->validate($request, [
             'client' => 'required',
             'orderDate' => 'required',
-            //'deliveryDate' => 'required',
+            'deliveryDate' => 'required',
         ]);
 
 
@@ -262,11 +262,18 @@ class SaleController extends Controller
      */
     public function showSales()
     {
-/**        $promotions = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDate', 'sales.deliveryDate')->where('isDeleted', '=', '0')->get();/
-        /*
-        */
+        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDateTime' , 'sales.deliveryDateTime')->where('sales.isDeleted', '=', 0)->get();
 
-        $sales = DB::table('sales') ->select('sales.id', 'sales.client', 'sales.orderDateTime', 'sales.deliveryDateTime')->where('sales.isDeleted', '=', 0)->get();
+        //Formatea las fechas
+        foreach($sales as $sale){
+            $formato = 'Y-m-d H:i:s';
+            $delivery =DateTime::createFromFormat($formato, $sale->deliveryDateTime);
+            $order =DateTime::createFromFormat($formato, $sale->orderDateTime);
+            $sale->orderDateTime=  $order->format('d/m/Y H:i');
+            $sale->deliveryDateTime=  $delivery->format('d/m/Y H:i');
+        }
+
+        
 
         return response()->json(['success' => true, 'data' => $sales]);
     }

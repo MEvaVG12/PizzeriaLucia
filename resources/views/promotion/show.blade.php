@@ -49,11 +49,11 @@
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script>
-  //Definición de variables
-  var promotion = {!! json_encode($promotion->toArray()) !!};
+//Definición de variables
+var promotion = {!! json_encode($promotion->toArray()) !!};
 
-  //Definición de rutas para ser usadas en js
-  promotionDetailsRoute = "{{url('api/promotion/index/promotionDetails')}}";
+//Definición de rutas para ser usadas en js
+promotionDetailsRoute = "{{url('api/promotion/index/promotionDetails')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionTableShowPromotionView.js') }}"></script>
 @stop

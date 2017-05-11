@@ -2,121 +2,68 @@
 
 @section('links')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-<link href="{{ URL::asset('css/styleToastr.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('css/styles.css') }}" rel="stylesheet">
 @stop
 
 @section('content')
-    <div class="page-header">
-      <h1>Mostrar Venta</h1>
+<div class="page-header">
+    <h1>Mostrar Venta</h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Cliente:</strong> {{ $sale->client }}
+        </div>
     </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Fecha  y hora de pedido:</strong> {{ $sale->orderDateTime }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Fecha y hora de entrega:</strong> {{ $sale->deliveryDateTime }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Detalle de venta:</strong>
+            <div class="panel-body">
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Cliente:</strong>
-                    {{ $sale->client }}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Fecha  y hora de pedido:</strong>
-                    {{ $sale->orderDateTime }}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Fecha y hora de entrega:</strong>
-                    {{ $sale->deliveryDateTime }}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-              <div class="form-group">
-                  <strong>Detalle de venta:</strong>
-                      <div class="panel-body">
-
-                        <form method="POST">
-                          {{ csrf_field() }}
-                          <table class='table table-bordered' id='productTable'>
-                           <thead>
+                <form method="POST">
+                    {{ csrf_field() }}
+                    <table class='table table-bordered' id='saleTable'>
+                        <thead>
                             <th class="text-center">Producto</th>
                             <th class="text-center">Cantidad</th>
                             <th class="text-center">Precio Unitario</th>
                             <th class="text-center">Subtotal</th>
-                         </thead>
-                          </table>
-                        </form>
+                        </thead>
+                    </table>
+                </form>
 
-                      </div>
-              </div>
             </div>
-          <div class='form-group'>
-            <label for="title" class='control-label'>Total: </label>
-            <input required  readonly="readonly" class='form-control' type='text' name='total' id='total' value="0">
-          </div>
-      </div>
-
-
-
+        </div>
+    </div>
+    <div class='form-group'>
+        <label for="title" class='control-label'>Total: </label>
+        <input required readonly="readonly" class='form-control' type='text' name='total' id='total' value="0">
+    </div>
+</div>
 @stop
 
 @section('javascript')
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+//Definición de variables
+var sale = {!! json_encode($sale->toArray()) !!};
 
-
-<script>$(document).ready(function(){
-
-  var sale = {!! json_encode($sale->toArray()) !!};
-  var id = sale.id;
-
-
-  var token = $(" [name=_token]").val();
-    var productTable =  $('#productTable').DataTable({
-          "ajax": {
-              "url": "http://localhost:8080/pizzeria/public/api/sale/index/saleDetails",
-              "type": "post",
-              "data" : {
-                 '_token': token,
-                  "id" :  id ,
-              }
-          },
-          "language": {
-              "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
-          },
-          "columns":[
-            {
-              "targets": 0,
-              "data" : function(row, aoData, fnCallback) {
-                if (row['productName'] != null){
-                  return row['typeProduct'] + ' ' + row['productName'];
-                } else {
-                  return 'Promoción'  + ' ' + row['promotionName'];
-                }     
-            }},
-            {sWidth : "30%", data:'amount', name: 'sale_details.amount'},
-            {sWidth : "30%", data:'price', name: 'sale_details.price'},
-            {
-              "targets": 3,
-              "data" : function(row, aoData, fnCallback) {
-                     return row['amount']*row['price'];
-                }      
-            }
-          ],
-
-          "dom": 'Bfrtip',
-          "initComplete": function(settings, json) {
-              var total =0;
-              productTable.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-                 var data = this.data();
-                 total = total + data['amount']*data['price'];
-                 $("#total").val(total);
-             } );
-            }
-      });
-
-  
-});
+//Definición de rutas para ser usadas en js
+saleDetailsRoute = "{{url('api/sale/index/saleDetails')}}";
 </script>
+<script type="text/javascript" src="{{ URL::asset('js/sale/saleTableShowSaleView.js') }}"></script>
 @stop

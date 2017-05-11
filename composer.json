@@ -9,6 +9,7 @@
         "edvinaskrucas/notification": "5.*",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "nesbot/carbon": "^1.22",
         "yajra/laravel-datatables-oracle": "7.2",
         "zizaco/entrust": "5.2.x-dev"
     },

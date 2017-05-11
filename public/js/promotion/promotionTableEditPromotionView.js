@@ -89,11 +89,10 @@ $(document).ready(function() {
 
     //Borra la fila en la table
     $('#productTable tbody').on('click', 'button', function() {
-  
         if (confirm("¿Esta seguro que desea eliminar esta promoción?")) {
-
             var data = productTable.row($(this).parents('tr')).data();
             var id = data[0];
+            
             //ve si el objeto que elimino es uno nuevo o ya existente
             var isNew = false;
             for (var key in promotionsNew) {

@@ -46,17 +46,16 @@
 @stop
 
 @section('javascript')
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
-    <srcipt type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>
-    <script>
-      //Definición de rutas para ser usadas en js
-      productShowRoute= "{{url('product/show')}}";
-    </script>
-    <script type="text/javascript" src="{{ URL::asset('js/product/productView.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/product/productTableProductView.js') }}"></script>
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
+<srcipt type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>
+<script>
+//Definición de rutas para ser usadas en js
+productShowRoute= "{{url('product/show')}}";
+</script>
+<script type="text/javascript" src="{{ URL::asset('js/product/productView.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/product/productTableProductView.js') }}"></script>
 @stop

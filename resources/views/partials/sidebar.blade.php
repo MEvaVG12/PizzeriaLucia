@@ -3,7 +3,7 @@
   <ul id='dock'>
     <li class='active launcher dropdown hover'>
       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-      <a href="{{ url('sale/create') }}">Ventas</a>
+      <a href="{{ url('sale/index') }}">Ventas</a>
        <ul class='dropdown-menu'>
         <li>
           <a href="{{ url('sale/create') }}">Nueva</a>
@@ -39,13 +39,13 @@
       <ul class='dropdown-menu'>
         <li class='dropdown-header'>Ver reportes de...</li>
         <li>
-          <a href='#'>Ventas</a>
+          <a href="{{ url('sale/index') }}">Ventas</a>
         </li>
         <li>
-          <a href='#'>Promociones</a>
+          <a href="{{ url('promotion/index') }}">Promociones</a>
         </li>
         <li>
-          <a href="#">Productos</a>
+          <a href="{{ url('product') }}">Productos</a>
         </li>
       </ul>
     </li>

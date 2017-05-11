@@ -36,6 +36,7 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
 
             // Update
             var newValue = inputField.val();
+
             if (!newValue && ((settings.allowNulls) && settings.allowNulls != true)) {
                 // If columns specified
                 if (settings.allowNulls.columns) {
@@ -82,14 +83,6 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
 
             // Redraw table
             table.draw();
-        },
-        isNumber: function(evt) {
-            evt = (evt) ? evt : window.event;
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-              return false;
-            }
-            return true;
         }
     });
 
@@ -203,22 +196,15 @@ function getInputHtml(currentColumnIndex, settings, oldValue) {
         case "number-confirm": // text input w/ confirm
             input.html = "<input onkeypress='return isNumber(event)' id='ejbeatycelledit' class='" + inputCss + "' value='"+oldValue+"'></input>&nbsp;<a href='#' class='" + confirmCss + "' onclick='$(this).updateEditableCell(this)'>Confirm</a> <a href='#' class='" + cancelCss + "' onclick='$(this).cancelEditableCell(this)'>Cancel</a> ";
             break;    
+        case "decimal-confirm": // text input w/ confirm
+            input.html = "<input onkeypress='return isDecimal(event, getInputField(this).val())' id='ejbeatycelledit' class='" + inputCss + "' value='"+oldValue+"'></input>&nbsp;<a href='#' class='" + confirmCss + "' onclick='$(this).updateEditableCell(this)'>Confirm</a> <a href='#' class='" + cancelCss + "' onclick='$(this).cancelEditableCell(this)'>Cancel</a> ";
+            break;  
         default: // text input
             input.html = "<input type='text' onkeypress='return isNumber(event)' id='ejbeatycelledit' class='" + inputCss + "' onfocusout='$(this).updateEditableCell(this)' value='" + oldValue + "'></input>";
             break;
     }
     return input;
 }
-
-  //Permite ingresar solo números
-function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
-  }
 
 function getInputField(callingElement) {
     // Update datatables cell value

@@ -122,36 +122,40 @@ class PromotionController extends Controller
         $promotion = Promotion::findOrFail($id);
         $promotion->price = $request->input('price');
 
-        $productsUpdate = $request->input('productsUpdate');
-        if (is_array($productsUpdate) ){
-            foreach($productsUpdate as $productId)
+        $promotionsNew = $request->input('promotionsNew');
+        if (is_array($promotionsNew) ){
+            foreach($promotionsNew as $currentPromotion)
             {
-                $promotionDetail = PromotionDetail::findOrFail($productId['id']);
-                $promotionDetail->amount = $productId['newValue'];
-                $promotionDetail->save();
-            }
-        }
-
-        $productsDelete = $request->input('productsDelete');
-        if (is_array($productsDelete) ){
-            foreach($productsDelete as $productId)
-            {
-                $promotionDetail = PromotionDetail::findOrFail($productId['id']);
-                $promotionDetail->delete();
-            }
-        }
-
-        $productsNew = $request->input('productsNew');
-        if (is_array($productsNew) ){
-            foreach($productsNew as $productId)
-            {
-                $product = Product::findOrFail($productId['id']);
+                $product = Product::findOrFail($currentPromotion['id']);
                 $d = new PromotionDetail();
-                $d->amount = $productId['amount'];
+                $d->amount = $currentPromotion['amount'];
                 $d->product()->associate($product);
                 $d->promotion()->associate($promotion);
                 $d->save();
 
+            }
+        }
+
+        $promotionsUpdate = $request->input('promotionsUpdate');
+        if (is_array($promotionsUpdate) ){
+            foreach($promotionsUpdate as $currentPromotion)
+            {
+                $promotionDetail = PromotionDetail::find($currentPromotion['id']);
+                if (!empty($promotionDetail)){
+                    $promotionDetail->amount = $currentPromotion['newValue'];
+                    $promotionDetail->save();
+                 }
+            }
+        }
+
+        $promotionsDelete = $request->input('promotionsDelete');
+        if (is_array($promotionsDelete) ){
+            foreach($promotionsDelete as $currentPromotion)
+            {
+                $promotionDetail = PromotionDetail::find($currentPromotion['id']);
+                if (!empty($promotionDetail)){
+                    $promotionDetail->delete();
+                }
             }
         }
 
@@ -181,7 +185,7 @@ class PromotionController extends Controller
      */
     public function showPromotionDetails(Request $request)
     {
-        $promotion_details = DB::table('promotion_details')->join('products', 'products.id', '=', 'promotion_details.product_id') ->select('promotion_details.id', 'promotion_details.amount', 'products.name as productName')->where('promotion_details.promotion_id', '=', $request->input('id'))->get();
+        $promotion_details = DB::table('promotion_details')->join('products', 'products.id', '=', 'promotion_details.product_id')->join('product_types', 'products.product_type_id', '=', 'product_types.id') ->select('promotion_details.id', 'promotion_details.amount', 'products.name as productName', 'product_types.name as typeProduct')->where('promotion_details.promotion_id', '=', $request->input('id'))->get();
 
         return response()->json(['success' => true, 'data' => $promotion_details]);
     }

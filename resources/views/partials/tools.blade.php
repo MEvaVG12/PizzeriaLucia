@@ -1,10 +1,10 @@
 <section id='tools'>
   <ul class='breadcrumb' id='breadcrumb'>
     <li class='title'>Pizzería Lucía</li>
-    <li><a href="#">Ventas</a></li>
-    <li class='active'><a href="#">Promociones</a></li>
-    <li class='active'><a href="#">Productos</a></li>
-    <li class='active'><a href="#">Stock</a></li>
+    <li><a href="{{ url('sale/index') }}">Ventas</a></li>
+    <li class='active'><a href="{{ url('promotion/index') }}">Promociones</a></li>
+    <li class='active'><a href="{{ url('product') }}">Productos</a></li>
+    <li class='active'><a href="{{ url('stock') }}">Stock</a></li>
     <li class='active'><a href="#">Reportes</a></li>
   </ul>
   <div id='toolbar'>

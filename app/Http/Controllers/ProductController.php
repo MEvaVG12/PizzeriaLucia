@@ -97,7 +97,7 @@ class ProductController extends Controller
      */
     public function showProducts()
     {
-        $products = DB::table('products')->join('product_types', 'product_types.id', '=', 'products.product_type_id') ->select('products.id', 'products.name', 'products.price', 'product_types.name AS typeName')->get();
+        $products = DB::table('products')->join('product_types', 'product_types.id', '=', 'products.product_type_id') ->select('products.id', 'products.name', 'products.price', 'product_types.name AS typeProduct')->get();
 
         return response()->json(['success' => true, 'data' => $products]);
     }

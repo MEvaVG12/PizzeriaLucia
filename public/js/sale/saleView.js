@@ -59,7 +59,7 @@ function update() {
 
         console.log($("#deliveryDate").val());
         $.ajax({
-            url: "http://localhost:8080/pizzeria/public/api/sale/update" + '/' + id + '',
+            url: saleUpdateRoute + '/' + id,
             type: 'PUT',
             data: {
                 "price": $("#price").val(),

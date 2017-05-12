@@ -40,7 +40,7 @@
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script>
 //Definición de rutas para ser usadas en js
-saleIndexRoute = "{{url('api/sale/index')}}";
+saleIndexRoute = "{{url('api/sales')}}";
 saleEditRoute = "{{url('sale/edit')}}";
 saleShowRoute = "{{url('sale/show')}}";
 saleDeleteRoute = "{{url('api/sale/delete')}}";

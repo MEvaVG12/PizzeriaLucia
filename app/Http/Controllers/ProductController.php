@@ -15,8 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all()->take(10);
-        return View('product.product')->with('products',$products);
+        return View('product.product');
     }
 
     /**
@@ -49,19 +48,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         return View('product.show' , ['product' => $product]);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function get($id)
-    {
-        $product = Product::findOrFail($id);
-        return response()->json([$product]);
-    }
-
 
     public function destroy(Request $request)
     {

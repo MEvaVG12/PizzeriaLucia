@@ -9,7 +9,7 @@ use App\SaleDetail;
 use App\Product;
 use App\Promotion;
 use DateTime;
-use Notification;
+
 
 class SaleController extends Controller
 {
@@ -140,18 +140,12 @@ class SaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-       /* $this->validate($request, [
-            'price' => 'required'
-        ]);*/
         $formato = 'd/m/Y';
         $delivery =DateTime::createFromFormat($formato, $request->input('deliveryDate'));
-      //  $delivery = DateTime::createFromFormat('j-M-Y', '15-02-2009');
-       // $delivery = new DateTime($request->input('deliveryDate'));
         $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('deliveryTime'), -2));
 
         $sale = Sale::findOrFail($id);
         $sale->deliveryDateTime = $delivery;
-        //$sale->price = $request->input('price');
 
         $productsUpdate = $request->input('productsUpdate');
         if (is_array($productsUpdate) ){

@@ -41,7 +41,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-    <button class="btn btn-primary" onclick='save()'>Guardar</button>
+    <button class="btn btn-primary" onclick='update()'>Guardar</button>
 </div>
 @stop
 
@@ -54,7 +54,9 @@
 <script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>
 <script>
 //Definición de rutas para ser usadas en js
+productSRoute= "{{url('api/products')}}";
 productShowRoute= "{{url('product/show')}}";
+productUpdateRoute= "{{url('api/product/update')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/product/productView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/product/productTableProductView.js') }}"></script>

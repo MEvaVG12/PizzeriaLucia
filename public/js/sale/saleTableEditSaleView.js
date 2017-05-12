@@ -30,7 +30,7 @@
              '_token': $(" [name=_token]").val(),
              "id": id,
          },
-         url: "http://localhost:8080/pizzeria/public/api/sale/index/saleDetails",
+         url: saleDetailsRoute,
      }).done(function(data) {
          productsExists = data['data'];
          //Agrega productos existentes a tabla 
@@ -55,7 +55,7 @@
          },
          "processing": true,
          //"serverSide": true,
-         "ajax": "http://localhost:8080/pizzeria/public/api/products",
+         "ajax": productsRoute,
          "deferRender": true,
          "bAutoWidth": false,
          "columns": [{
@@ -86,7 +86,7 @@
          },
          "processing": true,
          //"serverSide": true,
-         "ajax": "http://localhost:8080/pizzeria/public/api/promotion/index",
+         "ajax": promotionsRoute,
          "deferRender": true,
          "bAutoWidth": false,
          "columns": [{

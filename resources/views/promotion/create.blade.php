@@ -111,9 +111,9 @@
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>
 <script >
-  //Definición de rutas para ser usadas en js
-  productsRoute = "{{url('api/products')}}";
-  promotionCreateRoute = "{{url('api/promotion/create')}}";
+//Definición de rutas para ser usadas en js
+productsRoute = "{{url('api/products')}}";
+promotionCreateRoute = "{{url('api/promotion/create')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionTableCreatePromotionView.js') }}"></script>

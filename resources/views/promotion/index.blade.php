@@ -39,11 +39,11 @@
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script>
-  //Definición de rutas para ser usadas en js
-  promotionDeleteRoute= "{{url('api/promotion/delete')}}";
-  promotionIndexRoute= "{{url('api/promotion/index')}}";
-  promotionEditRoute= "{{url('promotion/edit')}}";
-  promotionShowRoute= "{{url('promotion/show')}}";
+//Definición de rutas para ser usadas en js
+promotionDeleteRoute= "{{url('api/promotion/delete')}}";
+promotionsRoute= "{{url('api/promotions')}}";
+promotionEditRoute= "{{url('promotion/edit')}}";
+promotionShowRoute= "{{url('promotion/show')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionTableIndexPromotionView.js') }}"></script>

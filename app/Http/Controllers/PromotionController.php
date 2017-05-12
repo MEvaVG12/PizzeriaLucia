@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Promotion;
 use App\PromotionDetail;
 use App\Product;
-use Notification;
 
 class PromotionController extends Controller
 {

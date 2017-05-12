@@ -1,8 +1,8 @@
 //vector que contendrá los productos a actualizar
 productsUpdate = [];
 
-//Recoge los datos para ser guardados en la bd
-function save() {
+//Recoge los datos para ser actualizados en la bd
+function update() {
     var errors = [];
     var token = $(" [name=_token]").val();
     
@@ -28,7 +28,7 @@ function save() {
         //Guarda los datos en la DB
         for (var key in productsUpdate) {
             $.ajax({
-                url: "api/product/update/" + productsUpdate[key]['id'] + '',
+                url: productUpdateRoute + "/" + productsUpdate[key]['id'],
                 type: 'PUT',
                 data: {
                     "price": productsUpdate[key]['price'],

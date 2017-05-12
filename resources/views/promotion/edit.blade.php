@@ -107,12 +107,12 @@
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>
 <script >
-  var promotion = {!! json_encode($promotion->toArray()) !!};
+var promotion = {!! json_encode($promotion->toArray()) !!};
 
-  //Definición de rutas para ser usadas en js
-  promotionDetailsRoute = "{{url('api/promotion/index/promotionDetails')}}";
-  productsRoute = "{{url('api/products')}}";
-  promotionUpdateRoute = "{{url('api/promotion/update')}}";
+//Definición de rutas para ser usadas en js
+promotionDetailsRoute = "{{url('api/promotion/promotionDetails')}}";
+productsRoute = "{{url('api/products')}}";
+promotionUpdateRoute = "{{url('api/promotion/update')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionTableEditPromotionView.js') }}"></script>

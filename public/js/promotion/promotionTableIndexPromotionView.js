@@ -6,7 +6,7 @@ $(document).ready(function() {
         },
         "processing": true,
         // "serverSide": true,
-        "ajax": promotionIndexRoute,
+        "ajax": promotionsRoute,
         "deferRender": true,
         "bAutoWidth": false,
         "columns": [{

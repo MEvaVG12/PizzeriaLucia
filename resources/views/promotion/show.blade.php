@@ -53,7 +53,7 @@
 var promotion = {!! json_encode($promotion->toArray()) !!};
 
 //Definición de rutas para ser usadas en js
-promotionDetailsRoute = "{{url('api/promotion/index/promotionDetails')}}";
+promotionDetailsRoute = "{{url('api/promotion/promotionDetails')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/promotion/promotionTableShowPromotionView.js') }}"></script>
 @stop

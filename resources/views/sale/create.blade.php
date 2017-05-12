@@ -182,7 +182,7 @@
 <script >
   //Definición de rutas para ser usadas en js
   productsRoute = "{{url('api/products')}}";
-  promotionsRoute = "{{url('api/promotion/index')}}";
+  promotionsRoute = "{{url('api/promotions')}}";
   saleCreateRoute = "{{url('api/sale/create')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/bootstrap-datepicker.es.min.js') }}"></script>

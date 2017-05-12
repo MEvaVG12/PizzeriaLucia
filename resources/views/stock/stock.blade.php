@@ -39,7 +39,7 @@
 </form>
 
 <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-    <button class="btn btn-primary" onclick='save()'>Guardar</button>
+    <button class="btn btn-primary" onclick='update()'>Guardar</button>
 </div>
 @stop
 
@@ -49,6 +49,11 @@
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+//Definición de rutas para ser usadas en js
+stocksRoute= "{{url('api/stocks')}}";
+stockUpdateRoute= "{{url('api/stock/update')}}";
+</script>
 <script type="text/javascript" src="{{ URL::asset('js/stock/stockView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/stock/stockTableStockView.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/general.js') }}"></script>

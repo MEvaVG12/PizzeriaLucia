@@ -2,7 +2,7 @@
 stocksUpdate = [];
 
 //Recoge los datos para ser guardados en la bd
-function save() {
+function update() {
     var token = $(" [name=_token]").val();
 
     $("#errorMain").addClass('hidden');
@@ -12,7 +12,7 @@ function save() {
 
     for (var key in stocksUpdate) {
         $.ajax({
-            url: "api/stock/update/" + stocksUpdate[key]['id'] + '',
+            url: stockUpdateRoute + "/" + stocksUpdate[key]['id'],
             type: 'PUT',
             data: {
                 "amount": stocksUpdate[key]['amount'],

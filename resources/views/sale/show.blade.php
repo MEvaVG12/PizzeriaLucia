@@ -63,7 +63,7 @@
 var sale = {!! json_encode($sale->toArray()) !!};
 
 //Definición de rutas para ser usadas en js
-saleDetailsRoute = "{{url('api/sale/index/saleDetails')}}";
+saleDetailsRoute = "{{url('api/sale/saleDetails')}}";
 </script>
 <script type="text/javascript" src="{{ URL::asset('js/sale/saleTableShowSaleView.js') }}"></script>
 @stop

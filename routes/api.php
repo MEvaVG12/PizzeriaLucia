@@ -17,28 +17,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/sale/create', 'SaleController@store');
-Route::post('/promotion/create', 'PromotionController@store');
-//Route::POST('/promotion/create', function() { });
+Route::GET('promotions','PromotionController@showPromotions');
+Route::POST('promotion/promotionDetails','PromotionController@showPromotionDetails');
+Route::POST('/promotion/create', 'PromotionController@store');
+Route::PUT('promotion/update/{id}','PromotionController@update');
+Route::PUT('promotion/delete/{id}','PromotionController@destroy');
 
-Route::put('stock/update/{id}','StockController@update');
-Route::put('stock/updates','StockController@updates');
-Route::get('stocks', function(){
-  return Datatables::eloquent(App\Stock::select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')
-            ->join('ingredients','ingredients.id','=','stocks.ingredient_id'))->make(true);
-});
+Route::GET('sales','SaleController@showSales');
+Route::POST('sale/saleDetails','SaleController@showSaleDetails');
+Route::POST('sale/create', 'SaleController@store');
+Route::PUT('sale/update/{id}','SaleControllGETer@update');
+Route::PUT('sale/delete/{id}','SaleController@destroy');
 
-Route::get('products','ProductController@showProducts');
-Route::post('promotion/{id}/products','PromotionController@showProducts');
-Route::put('sale/update/{id}','SaleController@update');
-//Route::get('stocks','StockController@showStock');
-Route::post('ingredients','ProductController@showIngredients');
-Route::get('sale/index','SaleController@showSales');
-Route::put('sale/delete/{id}','SaleController@destroy');
-Route::post('sale/index/saleDetails','SaleController@showSaleDetails');
-Route::get('promotion/index','PromotionController@showPromotions');
-Route::post('promotion/index/promotionDetails','PromotionController@showPromotionDetails');
-Route::put('product/update/{id}','ProductController@update');
-Route::get('product/get/{id}','ProductController@get');
-Route::put('promotion/delete/{id}','PromotionController@destroy');
-Route::put('promotion/update/{id}','PromotionController@update');
+Route::GET('stocks', 'StockController@showStocks');
+Route::PUT('stock/update/{id}','StockController@update');
+
+Route::GET('products','ProductController@showProducts');
+Route::POST('ingredients','ProductController@showIngredients');
+Route::PUT('product/update/{id}','ProductController@update');
+
+
+
+
+

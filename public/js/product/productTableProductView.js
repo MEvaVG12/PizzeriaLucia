@@ -4,7 +4,7 @@ $(document).ready(function() {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
         },
         "processing": true,
-        "ajax": "api/products",
+        "ajax": productSRoute,
         "bAutoWidth": false,
         "deferRender": true,
         "columns": [{

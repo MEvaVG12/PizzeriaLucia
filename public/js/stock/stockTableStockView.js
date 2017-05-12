@@ -7,7 +7,7 @@ $(document).ready(function() {
         },
         "processing": true,
         //"serverSide": true,
-        "ajax": "api/stocks",
+        "ajax": stocksRoute,
         "bAutoWidth": false,
         "columns": [{
                 sWidth: "50%",

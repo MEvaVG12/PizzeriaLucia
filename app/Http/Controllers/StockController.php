@@ -94,38 +94,15 @@ class StockController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display stocks list.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updates(Request $request)
+    public function showStocks()
     {
+        $sales = DB::table('stocks')->join('ingredients','ingredients.id','=','stocks.ingredient_id')->select('stocks.id', 'stocks.ingredient_id', 'stocks.amount', 'ingredients.name as name')->get();
 
-       $stockUpdate = $request->input('stockUpdate');
-
-        if (is_array($stockUpdate) ){
-            foreach($stockUpdate as $stock)
-            {
-                $currentStock = Stock::findOrFail($stock['id']);
-                $currentStock->amount = $stock['amount'];
-                $currentStock->save();
-
-            }
-        }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json(['success' => true, 'data' => $sales]);
     }
 
 

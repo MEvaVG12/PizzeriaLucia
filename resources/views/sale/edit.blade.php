@@ -170,6 +170,7 @@
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/datapicker.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/dataTables.cellEdit.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/big.js') }}"></script>
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 <script >
 var sale = {!! json_encode($sale->toArray()) !!};

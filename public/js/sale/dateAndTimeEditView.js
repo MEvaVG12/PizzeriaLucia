@@ -1,6 +1,5 @@
 //Definición de la configuración del datapicker
 $('#dp').datepicker({
-    format: "dd/mm/yy",
     language: "es",
     daysOfWeekDisabled: "0",
     autoclose: true,

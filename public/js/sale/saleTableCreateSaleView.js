@@ -73,7 +73,7 @@ $(document).ready(function() {
             {
                 "sWidth": "8%",
                 "targets": [6],
-                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button type='button' id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
                 "searchable": false
             },
             {
@@ -90,7 +90,15 @@ $(document).ready(function() {
 
     //Borra la fila en la table
     $('#saleDetailTable tbody').on('click', 'button', function() {
-        saleDetailTable.row($(this).parents('tr')).remove().draw();
+        if (confirm("¿Esta seguro que desea eliminar?")) {
+            var data = saleDetailTable.row($(this).parents('tr')).data();
+            var priceBig = new Big(data[3]);
+            var amountBig = new Big(data[2]);
+            var subtotal = priceBig.times(amountBig);
+            var totalBig = new Big($("#total").val());
+            $("#total").val(totalBig.minus(subtotal).toString());
+                saleDetailTable.row($(this).parents('tr')).remove().draw();
+            }
     });
 
     $('#closeProduct').on('click', function() {
@@ -129,28 +137,23 @@ $(document).ready(function() {
         } else {
             $("#errorModalProduct").addClass('hidden');
             //Agrega en la tabla de detalle de promoción los datos seleccionados
-            var subtotal = rowData['price'] * $("#amountProduct").val();
+            var priceBig = new Big(rowData['price']);
+            var amountProductBig = new Big($("#amountProduct").val());
+            var subtotal = priceBig.times(amountProductBig);
             saleDetailTable.row.add([
                 rowData['typeProduct'] + " " + rowData['name'],
                 rowData['id'],
                 $("#amountProduct").val(),
                 rowData['price'],
-                subtotal, 'product'
+                subtotal.toString(), 'product'
             ]).draw(false);
 
             //limpia modelo
             $("#amountProduct").val('');
             productTable.rows('tr.selected').deselect();
             $('#modalAddProduct').modal('toggle');
-            $("#total").val(subtotal + parseFloat($("#total").val()));
-        }
-    });
-
-    //Borra la fila en la tabla
-    $('#saleDetailTable tbody').on('click', 'button', function() {
-        if (confirm("¿Esta seguro que desea eliminar?")) {
-            saleDetailTable.push(product);
-            tableP.row($(this).parents('tr')).remove().draw();
+            var totalBig = new Big($("#total").val());
+            $("#total").val(subtotal.plus(totalBig).toString());
         }
     });
 
@@ -175,21 +178,26 @@ $(document).ready(function() {
             }
         } else {
             $("#errorModalPromotion").addClass('hidden');
+            
             //Agrega en la tabla de detalle de promoción los datos seleccionados
-            var subtotal = rowData['price'] * $("#amountPromotion").val();
+            var priceBig = new Big(rowData['price']);
+            var amountPromotionBig = new Big($("#amountPromotion").val());
+            var subtotal = priceBig.times(amountPromotionBig);
             saleDetailTable.row.add([
                 "Promoción " + rowData['name'],
                 rowData['id'],
                 $("#amountPromotion").val(),
                 rowData['price'],
-                subtotal, 'promotion'
+                subtotal.toString(), 'promotion'
             ]).draw(false);
 
             //limpia modelo
             $("#amountPromotion").val('');
             promotionTable.rows('tr.selected').deselect();
             $('#modalAddPromotion').modal('toggle');
-            $("#total").val(subtotal + parseFloat($("#total").val()));
+            var totalBig = new Big($("#total").val());
+            $("#total").val(subtotal.plus(totalBig).toString());
+
         }
     });
 

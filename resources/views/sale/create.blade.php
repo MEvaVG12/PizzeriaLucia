@@ -178,6 +178,7 @@
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="{{ URL::asset('js/big.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/datapicker.js') }}"></script>
 <script >
   //Definición de rutas para ser usadas en js

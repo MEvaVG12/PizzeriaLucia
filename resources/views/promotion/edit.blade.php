@@ -41,7 +41,7 @@
         <div class="panel-body">
             <form method="POST">
                 {{ csrf_field() }}
-                <table class='table table-bordered' id='productTable'>
+                <table class='table table-bordered' id='promotionDetailTable'>
                     <thead>
                         <th class="text-center">Id</th>
                         <th class="text-center">Producto</th>
@@ -79,7 +79,7 @@
                 </div>
                 <div class='form-group'>
                     <p> Producto: </p>
-                    <table class='table table-bordered' id='productTableNew'>
+                    <table class='table table-bordered' id='promotionDetailTableNew'>
                         <thead>
                             <th class="text-center">Producto</th>
                         </thead>

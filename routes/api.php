@@ -26,7 +26,7 @@ Route::PUT('promotion/delete/{id}','PromotionController@destroy');
 Route::GET('sales','SaleController@showSales');
 Route::POST('sale/saleDetails','SaleController@showSaleDetails');
 Route::POST('sale/create', 'SaleController@store');
-Route::PUT('sale/update/{id}','SaleControllGETer@update');
+Route::PUT('sale/update/{id}','SaleController@update');
 Route::PUT('sale/delete/{id}','SaleController@destroy');
 
 Route::GET('stocks', 'StockController@showStocks');

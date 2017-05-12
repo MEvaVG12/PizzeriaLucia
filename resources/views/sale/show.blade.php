@@ -18,12 +18,12 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Fecha  y hora de pedido:</strong> {{ $sale->orderDateTime }}
+            <strong>Fecha  y hora de pedido:</strong> {{ Carbon\Carbon::parse($sale->orderDateTime)->format('d/m/Y H:i') }}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Fecha y hora de entrega:</strong> {{ $sale->deliveryDateTime }}
+            <strong>Fecha y hora de entrega:</strong> {{ Carbon\Carbon::parse($sale->deliveryDateTime)->format('d/m/Y H:i') }}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -57,6 +57,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ URL::asset('js/big.js') }}"></script>
 <srcipt src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script>
 //Definición de variables

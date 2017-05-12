@@ -28,29 +28,37 @@
     <strong>Éxito!</strong> La promoción se guardo correctamente.
 </div>
 
-<form method="POST">
+
+<form method="POST" class="form-horizontal" >
 
     {{ csrf_field() }}
 
     <div class="panel-body">
         <div class='form-group'>
-            <label for="title" class='control-label'>Nombre de la promoción: </label>
-            <input required class='form-control' placeholder='Ingrese nombre de la promoción' type='text' name='name' id='name'>
+            <label for="title" class='col-sm-1 control-label'>Nombre: </label>
+            <div class="col-sm-11">
+                <input required class='form-control' placeholder='Ingrese nombre de la promoción' type='text' name='name' id='name'>
+            </div>
+        </div>
+        <br>
+        <div class='form-group'>
+            <label for="title" class='col-sm-1 control-label'>Precio: </label>
+            <div class="col-sm-11">
+                <input required class='form-control' onkeypress="return isDecimal(event, this.form.price.value)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price'>
+            </div>
         </div>
         <div class='form-group'>
-            <label for="title" class='control-label'>Precio de la promoción: </label>
-            <input required class='form-control' onkeypress="return isDecimal(event, this.form.price.value)" placeholder='Ingrese precio de la promoción' type='text' name='price' id='price'>
-        </div>
-        <div class='form-group'>
-            <label for="title" class='control-label'>Productos: </label>
-            <table class='table table-bordered' id='promotionDetailTable'>
-                <thead>
-                    <th class="text-center">Producto</th>
-                    <th class="text-center">IDProductos</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-center">Borrar</th>
-                </thead>
+            <label for="title" class='col-sm-1 control-label'>Productos: </label>
+            <div class="col-sm-11">
+                <table class='table table-bordered' id='promotionDetailTable'>
+                    <thead>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">IDProductos</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Borrar</th>
+                    </thead>
             </table>
+            </div>
         </div>
     </div>
 </form>
@@ -77,7 +85,7 @@
             </div>
             <div class="modal-body">
                 <div class='form-group'>
-                    <p>Cantidad</p>
+                    <p >Cantidad</p>
                     <input required class='form-control' onkeypress="return isNumber(event)" placeholder='Ingrese cantidad del producto' type='text' name='amount' id='amount'>
                 </div>
                 <div class='form-group'>

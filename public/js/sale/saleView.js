@@ -35,11 +35,15 @@ function deleteSale(id) {
 //Recoge los datos para ser actualizados en la bd
 function update() {
     var errors = [];
-    var table = $('#saleDetailsTable').DataTable();
+    var saleDetailTable = $('#saleDetailsTable').DataTable();
     var productsId = [];
     var amounts = [];
     var token = $(" [name=_token]").val();
+
     //Valida que todos los datos están ingresados
+    if (saleDetailTable.rows().data().length < 1) {
+        errors.push('Ingrese al menos un producto en la tabla')
+    }
     if ($("#price").val() === '') {
         errors.push('El campo precio es requerido')
     }
@@ -57,7 +61,12 @@ function update() {
         $("#errorDB").addClass('hidden');
         $("#success").addClass('hidden')
 
-        console.log($("#deliveryDate").val());
+        console.log(productsUpdate);
+        console.log(productsDelete);
+        console.log(productsNew);
+        console.log(promotionsUpdate);
+        console.log(promotionsDelete);
+        console.log(promotionsNew);
         $.ajax({
             url: saleUpdateRoute + '/' + id,
             type: 'PUT',
@@ -75,6 +84,13 @@ function update() {
             },
             success: function(data) {
                 $("#success").removeClass('hidden')
+                //Vacía arrays
+                productsUpdate.length=0;
+                productsDelete.length=0;
+                productsNew.length=0;
+                promotionsUpdate.length=0;
+                promotionsDelete.length=0;
+                promotionsNew.length=0;
             },
             error: function(xhr, status) {
                 $("#errorDB").removeClass('hidden')

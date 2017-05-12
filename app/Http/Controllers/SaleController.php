@@ -57,11 +57,11 @@ class SaleController extends Controller
             'deliveryDate' => 'required',
         ]);
 
-
-        $order = new DateTime($request->input('orderDate'));
+        $formato = 'd/m/Y';
+        $order =DateTime::createFromFormat($formato, $request->input('orderDate'));
         $order->setTime(substr($request->input('orderTime'), 0, 2), substr($request->input('orderTime'), -2));
 
-        $delivery = new DateTime($request->input('deliveryDate'));
+        $delivery =DateTime::createFromFormat($formato, $request->input('deliveryDate'));
         $delivery->setTime(substr($request->input('deliveryTime'), 0, 2), substr($request->input('deliveryTime'), -2));
 
         $p = new Sale();

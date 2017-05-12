@@ -31,10 +31,13 @@ function deletePromotion(id) {
 //Recoge los datos para ser actualizados en la bd
 function update() {
     var errors = [];
-
+    var promotionDetailTable = $('#promotionDetailTable').DataTable();
     var token = $(" [name=_token]").val();
 
     //Valida que todos los datos están ingresados
+    if (promotionDetailTable.rows().data().length < 1) {
+        errors.push('Ingrese al menos un producto en la tabla')
+    }
     for (var key in promotionsUpdate) {
         if (promotionsUpdate[key]['newValue'] < 1 && errors.length < 1) {
             errors.push('La cantidad de producto debe ser positivo')

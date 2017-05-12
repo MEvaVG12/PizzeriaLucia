@@ -37,7 +37,10 @@ $(document).ready(function() {
             {
                 "targets": 3,
                 "data": function(row, aoData, fnCallback) {
-                    return row['amount'] * row['price'];
+                    var priceBig = new Big(row['price']);
+                    var amountBig = new Big(row['amount']);
+                    var subtotal = priceBig.times(amountBig);
+                    return subtotal.toString();
                 }
             }
         ],
@@ -47,8 +50,11 @@ $(document).ready(function() {
             var total = 0;
             saleTable.rows().every(function(rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                total = total + data['amount'] * data['price'];
-                $("#total").val(total);
+                var priceBig = new Big(data['price']);
+                var amountBig = new Big(data['amount']);
+                var subtotal = priceBig.times(amountBig);
+                var totalBig = new Big($("#total").val());
+                $("#total").val(subtotal.plus(totalBig).toString());
             });
         }
     });

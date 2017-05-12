@@ -39,7 +39,7 @@ $(document).ready(function() {
             {
                 "sWidth": "8%",
                 "targets": [3],
-                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button type='button'  id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
                 "searchable": false
             }
         ],
@@ -51,7 +51,9 @@ $(document).ready(function() {
 
     //Borra la fila en la table
     $('#promotionDetailTable tbody').on('click', 'button', function() {
-        promotionDetailTable.row($(this).parents('tr')).remove().draw();
+        if (confirm("¿Esta seguro que desea eliminar?")) {
+            promotionDetailTable.row($(this).parents('tr')).remove().draw();
+        }
     });
 
     //Permite seleccionar solo una fila de la tabla

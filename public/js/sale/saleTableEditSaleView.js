@@ -14,7 +14,7 @@
              {
                  "sWidth": "8%",
                  "targets": [5],
-                 "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+                 "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button type='button' id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
                  "searchable": false
              }
          ],
@@ -35,14 +35,18 @@
          productsExists = data['data'];
          //Agrega productos existentes a tabla 
          for (var key in productsExists) {
-             var productColumn = '';
+            var productColumn = '';
+            var priceBig = new Big(productsExists[key]['price']);
+            var amountBig = new Big(productsExists[key]['amount']);
+            var subtotal = priceBig.times(amountBig);
+
              if (productsExists[key]['productName'] != null) {
                  productColumn = productsExists[key]['typeProduct'] + ' ' + productsExists[key]['productName'];
              } else {
                  productColumn = 'Promoción' + ' ' + productsExists[key]['promotionName'];
              }
              saleDetailsTable.row.add([productsExists[key]['id'],
-                 productColumn, productsExists[key]['amount'], productsExists[key]['price'], productsExists[key]['price'] * productsExists[key]['amount']
+                 productColumn, productsExists[key]['amount'], productsExists[key]['price'], subtotal.toString()
              ]).draw(false);
              total = total + productsExists[key]['price'] * productsExists[key]['amount'];
              $("#total").val(total);
@@ -127,17 +131,18 @@
          }]
      });
 
-     //Borra la fila en la table
+     //Borra la fila en la tabla
      $('#saleDetailsTable tbody').on('click', 'button', function() {
          if (confirm("¿Esta seguro que desea eliminar esta promoción?")) {
              var data = saleDetailsTable.row($(this).parents('tr')).data();
              var id = data[0];
-
+             var priceBig = new Big(data[3]);
+             var amountBig = new Big(data[2]);
+             var subtotal = priceBig.times(amountBig);
+             var totalBig = new Big($("#total").val());
              total = total - data[2] * data[3];
-             $("#total").val(total);
+             $("#total").val(totalBig.minus(subtotal).toString());
 
-             console.log(productsNew);
-             console.log(productsNew);
              //ve si el objeto que elimino es uno nuevo o ya existente
              var isNew = false;
              for (var key in promotionsNew) {
@@ -207,11 +212,14 @@
          } else {
              $("#errorModalProduct").addClass('hidden');
              //Agrega en la tabla de detalle de promoción los datos seleccionados
+            var priceBig = new Big(rowData['price']);
+            var amountProductBig = new Big($("#amountProduct").val());
+            var subtotal = priceBig.times(amountProductBig);
              saleDetailsTable.row.add([
                  rowData['id'],
                  rowData['typeProduct'] + ' ' + rowData['name'],
                  $("#amountProduct").val(),
-                 rowData['price'], rowData['price'] * parseFloat($("#amountProduct").val())
+                 rowData['price'], subtotal.toString()
              ]).draw(false);
              var product = {
                  id: rowData['id'],
@@ -219,12 +227,13 @@
                  price: rowData['price']
              };
              productsNew.push(product);
-             total = total + rowData['price'] * parseFloat($("#amountProduct").val());
-             $("#total").val(total);
+
              //limpia modelo
              $("#amountProduct").val('');
              productTable.rows('tr.selected').deselect();
              $('#modelAddProduct').modal('toggle');
+             var totalBig = new Big($("#total").val());
+             $("#total").val(subtotal.plus(totalBig).toString());
          }
      });
 
@@ -250,12 +259,16 @@
              }
          } else {
              $("#errorModalPromotion").addClass('hidden');
+
              //Agrega en la tabla de detalle de promoción los datos seleccionados
+             var priceBig = new Big(rowData['price']);
+             var amountPromotionBig = new Big($("#amountPromotion").val());
+             var subtotal = priceBig.times(amountPromotionBig);
              saleDetailsTable.row.add([
                  rowData['id'],
                  'Promoción' + ' ' + rowData['name'],
                  $("#amountPromotion").val(),
-                 rowData['price'], rowData['price'] * parseFloat($("#amountPromotion").val())
+                 rowData['price'], subtotal.toString()
              ]).draw(false);
              var product = {
                  id: rowData['id'],
@@ -263,12 +276,13 @@
                  price: rowData['price']
              };
              promotionsNew.push(product);
-             total = total + rowData['price'] * parseFloat($("#amountPromotion").val());
-             $("#total").val(total);
+
              //limpia modelo
              $("#amountPromotion").val('');
              productTable.rows('tr.selected').deselect();
              $('#modelAddPromotion').modal('toggle');
+             var totalBig = new Big($("#total").val());
+             $("#total").val(subtotal.plus(totalBig).toString());
          }
      });
 
@@ -278,14 +292,20 @@
      var id = updatedRow.data()[0];
      var amount = updatedRow.data()[2];
      var data = updatedRow.data();
+     var priceBig = new Big(data[3]);
+     var amountBig = new Big(amount);
+     var oldValueBig = new Big(oldValue);
+     var subtotal = priceBig.times(amountBig);
 
      //Actualiza el subtotal
-     data[4] = amount * updatedRow.data()[3];
+     data[4] = subtotal.toString();
      updatedRow.data(data).draw();
-     //Actualiza el total
-     total = total + (amount - oldValue) * updatedRow.data()[3];
-     $("#total").val(total);
 
+     //Actualiza el total
+     var incrementBig = new Big(amountBig.minus(oldValueBig));
+     var subtotal = incrementBig.times(priceBig);
+     var totalBig = new Big($("#total").val());
+     $("#total").val(subtotal.plus(totalBig).toString());
 
      if (updatedRow.data()[1].substring(0, 9) == 'Promoción') {
          //Si no existe en el array promotionsUpdate, lo agrega. Caso contrario, solo actualiza el precio

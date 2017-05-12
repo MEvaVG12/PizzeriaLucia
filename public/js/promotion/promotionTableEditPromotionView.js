@@ -3,7 +3,7 @@ var id = promotion.id;
 
 $(document).ready(function() {
 
-    var productTable = $('#productTable').DataTable({
+    var promotionDetailTable = $('#promotionDetailTable').DataTable({
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
         },
@@ -15,7 +15,7 @@ $(document).ready(function() {
             {
                 "sWidth": "8%",
                 "targets": [3],
-                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
+                "defaultContent": " <p data-placement='top' data-toggle='tooltip' title='Borrar'><button type='button' id='deleteBtn' class='btn btn-danger btn-xs' data-title='Delete' data-toggle='modal' data-target='#delete'><span class='glyphicon glyphicon-trash'></span></button></p>",
                 "searchable": false
             }
         ],
@@ -24,7 +24,7 @@ $(document).ready(function() {
         "dom": 'Bfrtip'
     });
 
-    var productTableNew = $('#productTableNew').DataTable({
+    var promotionDetailTableNew = $('#promotionDetailTableNew').DataTable({
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
         },
@@ -62,13 +62,13 @@ $(document).ready(function() {
         promotionsExists = data['data'];
         //Agrega productos existentes a tabla 
         for (var key in promotionsExists) {
-            productTable.row.add([
+            promotionDetailTable.row.add([
                 promotionsExists[key]['id'],promotionsExists[key]['typeProduct'] + " " + promotionsExists[key]['productName'], promotionsExists[key]['amount']
             ]).draw(false);
         }
     });
 
-    productTable.MakeCellsEditable({
+    promotionDetailTable.MakeCellsEditable({
         "onUpdate": updatePromotion,
         "inputCss": 'my-input-class',
         "columns": [2],
@@ -88,9 +88,9 @@ $(document).ready(function() {
     });
 
     //Borra la fila en la table
-    $('#productTable tbody').on('click', 'button', function() {
+    $('#promotionDetailTable tbody').on('click', 'button', function() {
         if (confirm("¿Esta seguro que desea eliminar esta promoción?")) {
-            var data = productTable.row($(this).parents('tr')).data();
+            var data = promotionDetailTable.row($(this).parents('tr')).data();
             var id = data[0];
             
             //ve si el objeto que elimino es uno nuevo o ya existente
@@ -110,16 +110,16 @@ $(document).ready(function() {
                  };
                  promotionsDelete.push(promotion);
             }
-            productTable.row($(this).parents('tr')).remove().draw();
+            promotionDetailTable.row($(this).parents('tr')).remove().draw();
         } 
     });
 
     //Permite seleccionar solo una fila de la tabla
-    $('#productTable tbody').on('click', 'tr', function() {
+    $('#promotionDetailTable tbody').on('click', 'tr', function() {
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         } else {
-            productTableNew.$('tr.selected').removeClass('selected');
+            promotionDetailTableNew.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
     });
@@ -127,7 +127,7 @@ $(document).ready(function() {
     //Agrega producto nuevo
     $('#addProduct').on('click', function() {
         var errors = [];
-        var rowData = productTableNew.rows('.selected').data()[0];
+        var rowData = promotionDetailTableNew.rows('.selected').data()[0];
         //Valida que todos los datos están ingresados
         if ($("#amount").val() === '') {
             errors.push('El campo cantidad es requerido')
@@ -135,7 +135,7 @@ $(document).ready(function() {
         if (parseInt($("#amount").val()) <1 ) {
             errors.push('El campo cantidad debe ser positivo')
         }
-        if ($('#productTableNew tbody tr.selected').length < 1) {
+        if ($('#promotionDetailTableNew tbody tr.selected').length < 1) {
             errors.push('Seleccione un producto en la tabla')
         }
         if (errors.length > 0) {
@@ -147,7 +147,7 @@ $(document).ready(function() {
         } else {
             $("#errorModal").addClass('hidden');
             //Agrega en la tabla de detalle de promoción los datos seleccionados
-            productTable.row.add([
+            promotionDetailTable.row.add([
                 rowData['id'], rowData['typeProduct'] + " " +
                 rowData['name'],
                 $("#amount").val()
@@ -159,7 +159,7 @@ $(document).ready(function() {
             promotionsNew.push(product);
             //limpia modelo
             $("#amount").val('');
-            productTableNew.rows('tr.selected').deselect();
+            promotionDetailTableNew.rows('tr.selected').deselect();
             $('#modalAddProduct').modal('toggle');
         }
     });
@@ -167,7 +167,7 @@ $(document).ready(function() {
        $('#closeProduct').on('click', function() {
         //limpia modelo
             $("#amount").val('');
-            productTableNew.rows('tr.selected').deselect();
+            promotionDetailTableNew.rows('tr.selected').deselect();
             $('#modalAddProduct').modal('toggle');
        });
 
